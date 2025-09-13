@@ -299,7 +299,7 @@ def show_home_page():
             }}
         </style>
     </head>
-    <body class="min-h-screen bg-gradient-to-b from-primary/10 to-background p-4">
+    <body class="bg-gradient-to-b from-primary/10 to-background p-4">
         <div class="max-w-2xl mx-auto">
             <div class="text-center mb-8 pt-8">
                 <h1 class="text-4xl font-bold gradient-text mb-4">
@@ -379,7 +379,7 @@ def show_home_page():
     </html>
     """
     
-    components.html(form_html, height=600)
+    components.html(form_html, height=700, scrolling=False)
 
 def show_results_page(house_data):
     monthly_hours = (house_data['calculatedMinutes'] / 60) * 4
@@ -569,20 +569,12 @@ def show_results_page(house_data):
         </script>
     </body>
     </html>
-    """, height=1000, scrolling=True)
+    """, height=2800, scrolling=False)
 
 # Main app logic
 def main():
-    # Debug: Show current query parameters
+    # Get current query parameters
     query_params = st.query_params
-    
-    # Add debugging info in sidebar (removed in production)
-    with st.sidebar:
-        st.write("Debug Info:")
-        st.write("Query params:", dict(query_params))
-        st.write("Show results:", st.session_state.show_results)
-        if st.session_state.house_data:
-            st.write("House data:", st.session_state.house_data)
     
     if query_params.get("calculate") == "true":
         try:
@@ -590,12 +582,8 @@ def main():
             bedrooms = int(query_params.get("bedrooms", 3))
             bathrooms = int(query_params.get("bathrooms", 2))
             
-            st.sidebar.write(f"Parsed values: {square_feet} sqft, {bedrooms} bed, {bathrooms} bath")
-            
             # Calculate cleaning time
             total_minutes, monthly_hours = calculate_cleaning_time(square_feet, bedrooms, bathrooms)
-            
-            st.sidebar.write(f"Calculated: {total_minutes} min, {monthly_hours} hrs/month")
             
             # Store in session state
             st.session_state.house_data = {
@@ -611,7 +599,6 @@ def main():
             st.rerun()
             
         except (ValueError, TypeError) as e:
-            st.sidebar.error(f"Error parsing parameters: {e}")
             st.error("Invalid input parameters. Please try again.")
             return
     
