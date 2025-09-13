@@ -386,7 +386,7 @@ def show_results_page(house_data):
     matching_activities = find_matching_activities(monthly_hours)
     activity = matching_activities[0]
     
-    # Custom CSS for honey color theme
+    # Custom CSS for honey color theme and box layout
     st.markdown("""
     <style>
     /* Hide Streamlit chrome */
@@ -407,6 +407,27 @@ def show_results_page(house_data):
     /* Background gradient */
     .stAppViewContainer > div:first-child {
         background: linear-gradient(to bottom, hsl(43, 96%, 90%) 0%, hsl(0, 0%, 100%) 100%);
+        padding: 2rem 1rem;
+    }
+    
+    /* Box size layout - constrain width and center content */
+    .block-container {
+        max-width: 48rem !important;
+        margin: 0 auto !important;
+        padding-top: 2rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    /* Center content in a card-like container */
+    .main .block-container {
+        background: white;
+        border-radius: 0.75rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        border: 1px solid var(--border);
+        padding: 2rem !important;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
     }
     </style>
     """, unsafe_allow_html=True)
