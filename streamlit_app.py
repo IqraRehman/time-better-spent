@@ -386,183 +386,121 @@ def show_results_page(house_data):
     matching_activities = find_matching_activities(monthly_hours)
     activity = matching_activities[0]
     
-    # Embed exact React results structure
-    components.html(f"""
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <script>
-            tailwind.config = {{
-                theme: {{
-                    extend: {{
-                        colors: {{
-                            primary: 'hsl(43, 96%, 56%)',
-                            background: 'hsl(0, 0%, 100%)',
-                            foreground: 'hsl(222.2, 84%, 4.9%)',
-                            'muted-foreground': 'hsl(215.4, 16.3%, 46.9%)',
-                            border: 'hsl(214.3, 31.8%, 91.4%)',
-                            card: 'hsl(0, 0%, 100%)'
-                        }}
-                    }}
-                }}
-            }}
-        </script>
-        <style>
-            body {{ 
-                font-family: 'Inter', sans-serif; 
-                margin: 0;
-                padding: 0;
-                overflow: visible;
-            }}
-            .prose pre {{ white-space: pre-line; }}
-        </style>
-    </head>
-    <body class="bg-gradient-to-b from-primary/10 to-background p-4">
-        <div class="max-w-3xl mx-auto">
-            <div class="text-center mb-8 pt-8">
-                <h1 class="text-4xl font-bold mb-4">
-                    Instead of spending {round(monthly_hours)} hours cleaning each month...
-                </h1>
-                <p class="text-muted-foreground text-lg mb-8">
-                    Here's something amazing you could do!
-                </p>
-            </div>
-
-            <div class="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
-                <div class="h-64 bg-cover bg-center" style="background-image: url('{activity['imageUrl']}')"></div>
-                
-                <div class="p-6">
-                    <h2 class="text-3xl font-bold mb-4">{activity['title']}</h2>
-                </div>
-                
-                <div class="px-6 pb-6 space-y-6">
-                    <p class="text-xl text-muted-foreground">
-                        {activity['description']}
-                    </p>
-
-                    <div class="bg-primary/5 p-6 rounded-lg">
-                        <p class="text-lg font-medium text-primary mb-2">
-                            Time Investment:
-                        </p>
-                        <p class="text-muted-foreground">
-                            {activity['timeRequirement']['minHours']}-{activity['timeRequirement']['maxHours']} hours total
-                        </p>
-                    </div>
-
-                    <div class="prose prose-lg">
-                        <h3 class="text-2xl font-semibold text-primary mb-4">
-                            Your Journey
-                        </h3>
-                        <div class="whitespace-pre-line">
-                            {activity['detailedTimeline']}
-                        </div>
-                    </div>
-
-                    <div class="bg-primary/10 p-6 rounded-lg mt-6">
-                        <div class="mb-6">
-                            <h3 class="text-2xl font-semibold text-primary mb-2">
-                                Ready to Get Started?
-                            </h3>
-                            <p class="text-muted-foreground mb-4">
-                                Get your house professionally cleaned and use your free time for {activity['title'].lower()}!
-                                Get a free quote now and receive a special $40 off coupon.
-                            </p>
-                        </div>
-                        
-                        <form class="space-y-4" onsubmit="submitQuote(event)">
-                            <div>
-                                <label class="block text-sm font-medium text-foreground mb-2">Name</label>
-                                <input type="text" id="name" required placeholder="Enter your name"
-                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-foreground mb-2">Email</label>
-                                <input type="email" id="email" required placeholder="you@example.com"
-                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-foreground mb-2">Zip Code</label>
-                                <input type="text" id="zip" required placeholder="12345"
-                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                            </div>
-                            
-                            <div class="bg-primary/5 p-4 rounded-lg">
-                                <p class="text-lg font-medium text-primary mb-2">House Details:</p>
-                                <p class="text-muted-foreground">{house_data['squareFeet']} sq ft, {house_data['bedrooms']} bedrooms, {house_data['bathrooms']} bathrooms</p>
-                                <p class="text-sm text-muted-foreground mt-2">Estimated cleaning time: {house_data['calculatedMinutes']} minutes per session, {round(monthly_hours)} hours per month</p>
-                            </div>
-                            
-                            <button type="submit" 
-                                    class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-all duration-200">
-                                Get My Free Quote + $40 Off Coupon
-                            </button>
-                        </form>
-                        
-                        <div class="mt-6 pt-6 border-t">
-                            <p class="text-lg font-medium text-primary mb-4">
-                                🎉 Spread the Joy! Help Friends Reclaim Their Time
-                            </p>
-                            <p class="text-sm text-muted-foreground mb-6">
-                                Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for {activity['title'].lower()}! Together, let's transform cleaning hours into moments of joy.
-                            </p>
-                            <div class="grid grid-cols-3 gap-2">
-                                <button onclick="shareTwitter()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded text-sm">📱 Twitter</button>
-                                <button onclick="shareFacebook()" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded text-sm">📘 Facebook</button>
-                                <button onclick="shareLinkedIn()" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm">💼 LinkedIn</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center mt-8">
-                <button onclick="goHome()" class="mr-4 border border-border bg-background hover:bg-primary/5 text-foreground py-2 px-6 rounded-md">
-                    Calculate Again
-                </button>
-                <button class="bg-primary hover:bg-primary/90 text-white py-2 px-6 rounded-md">
-                    Schedule Cleaning
-                </button>
-            </div>
+    # Custom CSS for honey color theme
+    st.markdown("""
+    <style>
+    /* Hide Streamlit chrome */
+    #MainMenu {visibility: hidden;}
+    .stDeployButton {display: none;}
+    header[data-testid="stHeader"] {display: none;}
+    
+    /* Custom colors matching Replit app */
+    :root {
+        --primary: hsl(43, 96%, 56%);
+        --background: hsl(0, 0%, 100%);
+        --foreground: hsl(222.2, 84%, 4.9%);
+        --muted-foreground: hsl(215.4, 16.3%, 46.9%);
+        --border: hsl(214.3, 31.8%, 91.4%);
+        --card: hsl(0, 0%, 100%);
+    }
+    
+    /* Background gradient */
+    .stAppViewContainer > div:first-child {
+        background: linear-gradient(to bottom, hsl(43, 96%, 90%) 0%, hsl(0, 0%, 100%) 100%);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Header section
+    st.markdown(f"""
+    <div style="text-align: center; margin-bottom: 2rem; padding-top: 2rem;">
+        <h1 style="font-size: 2.5rem; font-weight: bold; margin-bottom: 1rem; color: var(--foreground);">
+            Instead of spending {round(monthly_hours)} hours cleaning each month...
+        </h1>
+        <p style="color: var(--muted-foreground); font-size: 1.125rem; margin-bottom: 2rem;">
+            Here's something amazing you could do!
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Activity card with image
+    st.image(activity['imageUrl'], use_column_width=True)
+    
+    # Activity title and description
+    st.title(activity['title'])
+    st.markdown(f"*{activity['description']}*")
+    
+    # Time investment box
+    with st.container():
+        st.markdown(f"""
+        <div style="background-color: hsl(43, 96%, 90%); padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
+            <p style="font-size: 1.125rem; font-weight: 500; color: var(--primary); margin-bottom: 0.5rem;">
+                Time Investment:
+            </p>
+            <p style="color: var(--muted-foreground); margin: 0;">
+                {activity['timeRequirement']['minHours']}-{activity['timeRequirement']['maxHours']} hours total
+            </p>
         </div>
-
-        <script>
-            function submitQuote(event) {{
-                event.preventDefault();
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const zip = document.getElementById('zip').value;
-                
-                if (name && email && zip) {{
-                    alert('🎉 Thank you! We\\'ll send your personalized quote within 24 hours, plus your $40 off coupon!');
-                }} else {{
-                    alert('Please fill in all required fields (Name, Email, and Zip Code)');
-                }}
-            }}
-            
-            function shareTwitter() {{
-                const text = 'I could save {round(monthly_hours)} hours per month by hiring Bee Friends Cleaners! Use code TAKE40OFF for $40 off!';
-                window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text));
-            }}
-            
-            function shareFacebook() {{
-                window.open('https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com');
-            }}
-            
-            function shareLinkedIn() {{
-                window.open('https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com');
-            }}
-            
-            function goHome() {{
-                window.location.href = window.location.origin + window.location.pathname;
-            }}
-        </script>
-    </body>
-    </html>
-    """, height=3200, scrolling=False)
+        """, unsafe_allow_html=True)
+    
+    # Your Journey section
+    st.header("Your Journey")
+    with st.expander("See detailed timeline", expanded=True):
+        st.markdown(activity['detailedTimeline'])
+    
+    # Ready to Get Started section
+    st.header("Ready to Get Started?")
+    st.markdown(f"Get your house professionally cleaned and use your free time for {activity['title'].lower()}! Get a free quote now and receive a special $40 off coupon.")
+    
+    # Quote form using native Streamlit
+    with st.form("quote_form"):
+        name = st.text_input("Name", placeholder="Enter your name")
+        email = st.text_input("Email", placeholder="you@example.com")
+        zip_code = st.text_input("Zip Code", placeholder="12345")
+        
+        # House details display
+        st.info(f"**House Details:** {house_data['squareFeet']} sq ft, {house_data['bedrooms']} bedrooms, {house_data['bathrooms']} bathrooms\n\n"
+                f"Estimated cleaning time: {house_data['calculatedMinutes']} minutes per session, {round(monthly_hours)} hours per month")
+        
+        submitted = st.form_submit_button("Get My Free Quote + $40 Off Coupon", use_container_width=True)
+        
+        if submitted:
+            if name and email and zip_code:
+                st.success("🎉 Thank you! We'll send your personalized quote within 24 hours, plus your $40 off coupon!")
+            else:
+                st.error("Please fill in all required fields (Name, Email, and Zip Code)")
+    
+    # Social sharing section  
+    st.header("🎉 Spread the Joy! Help Friends Reclaim Their Time")
+    st.markdown(f"Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for {activity['title'].lower()}! Together, let's transform cleaning hours into moments of joy.")
+    
+    # Social sharing buttons
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        twitter_text = f"I could save {round(monthly_hours)} hours per month by hiring Bee Friends Cleaners! Use code TAKE40OFF for $40 off!"
+        twitter_url = f"https://twitter.com/intent/tweet?text={twitter_text}"
+        st.link_button("📱 Twitter", twitter_url, use_container_width=True)
+    
+    with col2:
+        facebook_url = "https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com"
+        st.link_button("📘 Facebook", facebook_url, use_container_width=True)
+    
+    with col3:
+        linkedin_url = "https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com"
+        st.link_button("💼 LinkedIn", linkedin_url, use_container_width=True)
+    
+    # Bottom navigation
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("Calculate Again", use_container_width=True):
+            st.session_state.show_results = False
+            st.session_state.house_data = None
+            st.rerun()
+    
+    with col2:
+        st.link_button("Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True)
 
 # Main app logic
 def main():
