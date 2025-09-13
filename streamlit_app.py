@@ -412,12 +412,24 @@ def show_results_page(house_data):
             }}
         </script>
         <style>
-            body {{ font-family: 'Inter', sans-serif; }}
+            body {{ 
+                font-family: 'Inter', sans-serif; 
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }}
             .prose pre {{ white-space: pre-line; }}
+            .main-container {{ 
+                height: 100%; 
+                overflow-y: auto; 
+                overflow-x: hidden;
+            }}
         </style>
     </head>
     <body class="min-h-screen bg-gradient-to-b from-primary/10 to-background p-4">
-        <div class="max-w-3xl mx-auto">
+        <div class="max-w-3xl mx-auto main-container">
             <div class="text-center mb-8 pt-8">
                 <h1 class="text-4xl font-bold mb-4">
                     Instead of spending {round(monthly_hours)} hours cleaning each month...
@@ -564,7 +576,7 @@ def show_results_page(house_data):
         </script>
     </body>
     </html>
-    """, height=1200)
+    """, height=800, scrolling=True)
 
 # Main app logic
 def main():
