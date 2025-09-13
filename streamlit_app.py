@@ -474,27 +474,20 @@ def show_results_page(house_data):
                         </div>
                         
                         <form class="space-y-4" onsubmit="submitQuote(event)">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-foreground mb-2">Full Name</label>
-                                    <input type="text" id="name" required
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-foreground mb-2">Email</label>
-                                    <input type="email" id="email" required
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-foreground mb-2">Zip Code</label>
-                                    <input type="text" id="zip" required
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-foreground mb-2">Phone (Optional)</label>
-                                    <input type="tel" id="phone"
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                </div>
+                            <div>
+                                <label class="block text-sm font-medium text-foreground mb-2">Name</label>
+                                <input type="text" id="name" required placeholder="Enter your name"
+                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-foreground mb-2">Email</label>
+                                <input type="email" id="email" required placeholder="you@example.com"
+                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-foreground mb-2">Zip Code</label>
+                                <input type="text" id="zip" required placeholder="12345"
+                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
                             </div>
                             
                             <div class="bg-primary/5 p-4 rounded-lg">
@@ -505,7 +498,7 @@ def show_results_page(house_data):
                             
                             <button type="submit" 
                                     class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-all duration-200">
-                                🎉 Get My Free Quote + $40 Off!
+                                Get My Free Quote + $40 Off Coupon
                             </button>
                         </form>
                         
