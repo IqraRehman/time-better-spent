@@ -16,43 +16,213 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for better styling
+# Custom CSS to match Replit app design exactly
 st.markdown("""
 <style>
+    /* Main app background gradient - matches Replit */
+    .main > div {
+        background: linear-gradient(to bottom, rgba(247, 188, 67, 0.1), #ffffff);
+        min-height: 100vh;
+        padding: 1rem;
+    }
+    
+    /* Header styling - matches Replit home page */
     .main-header {
-        background: linear-gradient(135deg, #FFE4B5 0%, #F0E68C 100%);
-        padding: 2rem;
-        border-radius: 10px;
+        text-align: center;
         margin-bottom: 2rem;
-        text-align: center;
+        padding-top: 2rem;
     }
-    .activity-card {
-        background: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 4px solid #FFE4B5;
-        margin: 1rem 0;
+    
+    .main-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(to right, hsl(43, 96%, 56%), hsla(43, 96%, 56%, 0.6));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
     }
+    
+    .main-subtitle {
+        font-size: 1.125rem;
+        color: #6b7280;
+        margin-bottom: 2rem;
+    }
+    
+    /* Card styling - matches Replit cards */
+    .house-form-card {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+        max-width: 600px;
+        margin: 0 auto 2rem auto;
+    }
+    
+    /* Results card styling */
     .calculation-result {
-        background: linear-gradient(135deg, #E6F3FF 0%, #F0F8FF 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
         text-align: center;
-        margin: 1rem 0;
+        margin: 2rem auto;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+        max-width: 800px;
     }
-    .quote-form {
-        background: #f8f9fa;
+    
+    .result-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #111827;
+    }
+    
+    .result-subtitle {
+        font-size: 1.125rem;
+        color: #6b7280;
+        margin-bottom: 2rem;
+    }
+    
+    /* Activity card - matches Replit activity display */
+    .activity-card {
+        background: white;
+        border-radius: 12px;
+        padding: 0;
+        margin: 2rem auto;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+        max-width: 800px;
+        overflow: hidden;
+    }
+    
+    .activity-header {
+        padding: 2rem 2rem 0 2rem;
+    }
+    
+    .activity-title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 1rem;
+    }
+    
+    .activity-description {
+        font-size: 1.25rem;
+        color: #6b7280;
+        margin-bottom: 1.5rem;
+    }
+    
+    .activity-content {
+        padding: 0 2rem 2rem 2rem;
+    }
+    
+    /* Time investment section - matches Replit primary/5 background */
+    .time-investment {
+        background: rgba(247, 188, 67, 0.05);
         padding: 1.5rem;
-        border-radius: 10px;
-        margin: 1rem 0;
+        border-radius: 8px;
+        margin: 1.5rem 0;
     }
+    
+    .time-investment-label {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: hsl(43, 96%, 56%);
+        margin-bottom: 0.5rem;
+    }
+    
+    .time-investment-value {
+        color: #6b7280;
+    }
+    
+    /* Journey section */
+    .journey-section {
+        margin: 1.5rem 0;
+    }
+    
+    .journey-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: hsl(43, 96%, 56%);
+        margin-bottom: 1rem;
+    }
+    
+    .expert-quote {
+        background: rgba(247, 188, 67, 0.1);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+        border-left: 4px solid hsl(43, 96%, 56%);
+        font-style: italic;
+    }
+    
+    /* Quote form - matches card styling */
+    .quote-form {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 2rem auto;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+        max-width: 800px;
+    }
+    
+    .quote-form-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #111827;
+    }
+    
+    /* Button styling - matches primary color */
     .stButton > button {
-        background: linear-gradient(135deg, #FFE4B5 0%, #F0E68C 100%);
-        color: #333;
+        background: hsl(43, 96%, 56%);
+        color: white;
         border: none;
-        border-radius: 25px;
-        padding: 0.5rem 2rem;
-        font-weight: bold;
+        border-radius: 6px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.2s;
+        width: 100%;
+    }
+    
+    .stButton > button:hover {
+        background: hsl(43, 96%, 46%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Form inputs styling */
+    .stNumberInput > div > div > input,
+    .stTextInput > div > div > input {
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        padding: 0.75rem;
+    }
+    
+    /* Share buttons */
+    .share-section {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        margin: 2rem auto;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
+        max-width: 800px;
+    }
+    
+    /* Hide Streamlit default elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Custom spacing */
+    .block-container {
+        padding-top: 2rem;
+        max-width: 1200px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -344,17 +514,16 @@ What You'll Achieve:
 
 # Main app
 def main():
-    # Header
+    # Header - matches Replit home page exactly
     st.markdown("""
     <div class="main-header">
-        <h1>🧹 Time Better Spent Calculator</h1>
-        <h3>See how much time you spend cleaning & discover amazing activities instead!</h3>
-        <p><em>Brought to you by Bee Friends Cleaners</em></p>
+        <h1 class="main-title">Time Better Spent</h1>
+        <p class="main-subtitle">See what amazing things you could do instead of cleaning your house</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # House details input
-    st.header("🏠 Tell us about your home")
+    # House details input form - matches Replit card design
+    st.markdown('<div class="house-form-card">', unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
@@ -370,7 +539,7 @@ def main():
     
     with col2:
         bedrooms = st.number_input(
-            "Bedrooms", 
+            "Number of Bedrooms", 
             min_value=1, 
             max_value=5, 
             value=3,
@@ -380,7 +549,7 @@ def main():
     
     with col3:
         bathrooms = st.number_input(
-            "Bathrooms", 
+            "Number of Bathrooms", 
             min_value=1, 
             max_value=6, 
             value=2,
@@ -389,53 +558,66 @@ def main():
         )
 
     # Calculate button
-    if st.button("✨ Calculate My Cleaning Time", type="primary"):
+    if st.button("Show Me What I Could Do Instead!", type="primary"):
         calculate_and_display_results(square_feet, bedrooms, bathrooms)
+        
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def calculate_and_display_results(square_feet, bedrooms, bathrooms):
     # Calculate cleaning time
     total_minutes, monthly_hours = calculate_cleaning_time(square_feet, bedrooms, bathrooms)
     
-    # Display results
+    # Display results - matches Replit results page header
     st.markdown(f"""
     <div class="calculation-result">
-        <h2>⏰ Your Cleaning Time Results</h2>
-        <h3>{total_minutes} minutes per cleaning session</h3>
-        <h4>{monthly_hours} hours per month spent cleaning</h4>
-        <p><strong>That's {monthly_hours * 12} hours per year!</strong></p>
+        <h1 class="result-title">Instead of spending {round(monthly_hours)} hours cleaning each month...</h1>
+        <p class="result-subtitle">Here's something amazing you could do!</p>
     </div>
     """, unsafe_allow_html=True)
     
     # Find matching activities
     matching_activities = find_matching_activities(monthly_hours)
     
-    st.header("🎯 Here's what you could do instead!")
-    st.write(f"With {monthly_hours} hours per month, you could:")
-    
-    # Display activities
+    # Display activities - matches Replit activity card design exactly
     for activity in matching_activities:
         timeline_html = activity['timeline'].replace('\n', '<br>')
+        
         st.markdown(f"""
         <div class="activity-card">
-            <h3>🎨 {activity['title']}</h3>
-            <p>{activity['description']}</p>
-            <h4>Time Investment: {activity['min_hours']}-{activity['max_hours']} hours over 6 months</h4>
-            <details>
-                <summary><strong>📋 Detailed Timeline</strong></summary>
-                <div style="margin-top: 10px;">
-                    {timeline_html}
+            <div class="activity-header">
+                <h2 class="activity-title">{activity['title']}</h2>
+                <p class="activity-description">{activity['description']}</p>
+                
+                <div class="time-investment">
+                    <p class="time-investment-label">Time Investment:</p>
+                    <p class="time-investment-value">{activity['min_hours']}-{activity['max_hours']} hours total</p>
                 </div>
-            </details>
-            <blockquote style="margin-top: 15px; font-style: italic; border-left: 3px solid #FFE4B5; padding-left: 15px;">
-                💡 {activity['expert_quote']}
-            </blockquote>
+            </div>
+            
+            <div class="activity-content">
+                <div class="journey-section">
+                    <h3 class="journey-title">Your Journey</h3>
+                    <div style="line-height: 1.6;">
+                        {timeline_html}
+                    </div>
+                </div>
+                
+                <div class="expert-quote">
+                    💡 {activity['expert_quote']}
+                </div>
+            </div>
         </div>
         """, unsafe_allow_html=True)
     
-    # Social sharing section
-    st.header("📢 Share Your Results!")
+    # Social sharing section - matches Replit card design
+    share_text = f"I could save {round(monthly_hours)} hours per month by hiring Bee Friends Cleaners! Instead of cleaning, I could {matching_activities[0]['title'].lower()}. Use code TAKE40OFF for $40 off your first cleaning! 🧹✨"
     
-    share_text = f"I could save {monthly_hours} hours per month by hiring Bee Friends Cleaners! Instead of cleaning, I could {matching_activities[0]['title'].lower()}. Use code TAKE40OFF for $40 off your first cleaning! 🧹✨"
+    st.markdown(f"""
+    <div class="share-section">
+        <h2 class="journey-title">📢 Share Your Results!</h2>
+        <p style="margin-bottom: 1.5rem; color: #6b7280;">Tell your friends how much time they could save!</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
@@ -454,12 +636,11 @@ def calculate_and_display_results(square_feet, bedrooms, bathrooms):
             linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com&summary={quote(share_text)}"
             st.markdown(f"[Click here to share on LinkedIn]({linkedin_url})")
     
-    # Quote request form
-    st.header("💰 Get Your Free Cleaning Quote + $40 Off!")
-    
-    st.markdown("""
+    # Quote request form - matches Replit card design exactly
+    st.markdown(f"""
     <div class="quote-form">
-        <p>Ready to reclaim your time? Get a free quote and receive $40 off your first cleaning!</p>
+        <h2 class="quote-form-title">💰 Get Your Free Cleaning Quote + $40 Off!</h2>
+        <p style="margin-bottom: 1.5rem; color: #6b7280;">Ready to reclaim your time? Get a free quote and receive $40 off your first cleaning!</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -474,26 +655,32 @@ def calculate_and_display_results(square_feet, bedrooms, bathrooms):
             zip_code = st.text_input("Zip Code", placeholder="12345")
             phone = st.text_input("Phone (Optional)", placeholder="(555) 123-4567")
         
-        # Hidden fields (pre-filled from calculation)
-        st.write(f"**House Details:** {square_feet} sq ft, {bedrooms} bedrooms, {bathrooms} bathrooms")
+        # House details display - matches Replit style
+        st.markdown(f"""
+        <div class="time-investment" style="margin: 1rem 0;">
+            <p class="time-investment-label">House Details:</p>
+            <p class="time-investment-value">{square_feet} sq ft, {bedrooms} bedrooms, {bathrooms} bathrooms</p>
+        </div>
+        """, unsafe_allow_html=True)
         
         submitted = st.form_submit_button("🎉 Get My Free Quote + $40 Off!", type="primary")
         
         if submitted:
             if name and email and zip_code:
-                # Store the quote request (in a real app, this would go to a database)
                 st.success("🎉 Thank you! We'll send your personalized quote within 24 hours, plus your $40 off coupon!")
                 st.balloons()
                 
-                # Display confirmation
-                st.info(f"""
-                **Quote Request Submitted:**
-                - Name: {name}
-                - Email: {email} 
-                - Zip: {zip_code}
-                - House: {square_feet} sq ft, {bedrooms} bed, {bathrooms} bath
-                - Discount: $40 off first cleaning
-                """)
+                # Display confirmation in card style
+                st.markdown(f"""
+                <div class="expert-quote">
+                    <strong>✅ Quote Request Submitted!</strong><br>
+                    Name: {name}<br>
+                    Email: {email}<br>
+                    Zip: {zip_code}<br>
+                    House: {square_feet} sq ft, {bedrooms} bed, {bathrooms} bath<br>
+                    <strong>Discount: $40 off first cleaning</strong>
+                </div>
+                """, unsafe_allow_html=True)
             else:
                 st.error("Please fill in all required fields (Name, Email, and Zip Code)")
 
