@@ -485,13 +485,26 @@ def show_results_page(house_data):
     formatted_content = formatted_content.replace('• Weekly bathroom cleaning:', '• **Weekly bathroom cleaning:**')
     formatted_content = formatted_content.replace('• Weekly floor cleaning:', '• **Weekly floor cleaning:**')
     
-    # Bold important labels and totals
+    # Bold important labels and totals with specific replacements to avoid over-bolding
     formatted_content = formatted_content.replace('Total weekly cleaning:', '**Total weekly cleaning:**')
     formatted_content = formatted_content.replace('Total monthly cleaning time:', '**Total monthly cleaning time:**')
     formatted_content = formatted_content.replace('Monthly time spent cleaning:', '**Monthly time spent cleaning:**')
     formatted_content = formatted_content.replace('Monthly cleaning time:', '**Monthly cleaning time:**')
-    formatted_content = formatted_content.replace('Time saved over', '**Time saved over')
-    formatted_content = formatted_content.replace(' hours', ' hours**')
+    
+    # Be specific with "Time saved over" bolding to avoid over-formatting
+    formatted_content = formatted_content.replace('Time saved over 6 months:', '**Time saved over 6 months:**')
+    formatted_content = formatted_content.replace('Time saved over 3 months:', '**Time saved over 3 months:**')
+    formatted_content = formatted_content.replace('Time saved over 4 months:', '**Time saved over 4 months:**')
+    
+    # Ensure proper line breaks between bullet points and other content
+    formatted_content = formatted_content.replace('• ', '\n• ')
+    formatted_content = formatted_content.replace('Total weekly cleaning', '\n**Total weekly cleaning**')
+    formatted_content = formatted_content.replace('Total monthly cleaning', '\n**Total monthly cleaning**')
+    formatted_content = formatted_content.replace('Monthly time spent cleaning', '\n**Monthly time spent cleaning**')
+    formatted_content = formatted_content.replace('Monthly cleaning time', '\n**Monthly cleaning time**')
+    
+    # Clean up any double line breaks that might have been created
+    formatted_content = formatted_content.replace('\n\n•', '\n•')
     
     # Format section headers - make them subtitles, not big headers like in Replit app
     formatted_content = formatted_content.replace('Time Investment Analysis:', '**Time Investment Analysis:**')
