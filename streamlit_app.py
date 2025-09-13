@@ -467,16 +467,45 @@ def show_results_page(house_data):
     # Your Journey section
     st.header("Your Journey")
     
-    # Format timeline content with proper spacing
+    # Format timeline content with proper spacing and bullet points
     timeline_content = activity['detailedTimeline']
     
-    # Split into sections and add spacing
-    formatted_content = timeline_content.replace('\n\n', '\n\n---\n\n')
+    # Split into sections and add proper formatting
+    formatted_content = timeline_content
+    
+    # Fix bullet points to display properly
+    formatted_content = formatted_content.replace('• Weekly cleaning:', '• **Weekly cleaning:**')
+    formatted_content = formatted_content.replace('• Monthly deep cleaning:', '• **Monthly deep cleaning:**')
+    formatted_content = formatted_content.replace('• Regular kitchen cleaning:', '• **Regular kitchen cleaning:**')
+    formatted_content = formatted_content.replace('• Bathroom cleaning:', '• **Bathroom cleaning:**')
+    formatted_content = formatted_content.replace('• Dusting and vacuuming:', '• **Dusting and vacuuming:**')
+    formatted_content = formatted_content.replace('• Weekly general cleaning:', '• **Weekly general cleaning:**')
+    formatted_content = formatted_content.replace('• Weekly home cleaning:', '• **Weekly home cleaning:**')
+    formatted_content = formatted_content.replace('• Weekly kitchen cleaning:', '• **Weekly kitchen cleaning:**')
+    formatted_content = formatted_content.replace('• Weekly bathroom cleaning:', '• **Weekly bathroom cleaning:**')
+    formatted_content = formatted_content.replace('• Weekly floor cleaning:', '• **Weekly floor cleaning:**')
+    
+    # Bold important labels and totals
+    formatted_content = formatted_content.replace('Total weekly cleaning:', '**Total weekly cleaning:**')
+    formatted_content = formatted_content.replace('Total monthly cleaning time:', '**Total monthly cleaning time:**')
+    formatted_content = formatted_content.replace('Monthly time spent cleaning:', '**Monthly time spent cleaning:**')
+    formatted_content = formatted_content.replace('Monthly cleaning time:', '**Monthly cleaning time:**')
+    formatted_content = formatted_content.replace('Time saved over', '**Time saved over')
+    formatted_content = formatted_content.replace(' hours', ' hours**')
+    
+    # Format section headers
+    formatted_content = formatted_content.replace('Time Investment Analysis:', '## Time Investment Analysis:')
+    formatted_content = formatted_content.replace('Writing Time Investment Breakdown', '## Writing Time Investment Breakdown')
+    formatted_content = formatted_content.replace('Expert Insight', '## Expert Insight')
+    formatted_content = formatted_content.replace('Expert Validation', '## Expert Validation')
     formatted_content = formatted_content.replace('🧹 Instead of', '\n\n🧹 **Instead of')
     formatted_content = formatted_content.replace('Month ', '\n\n## Month ')
     formatted_content = formatted_content.replace('Source:', '\n\n**Source:**')
     formatted_content = formatted_content.replace('Expert Source:', '\n\n**Expert Source:**')
     formatted_content = formatted_content.replace('Reference:', '\n\n**Reference:**')
+    
+    # Add visual separators between major sections
+    formatted_content = formatted_content.replace('\n\n\n', '\n\n---\n\n')
     
     with st.expander("See detailed timeline", expanded=True):
         st.markdown(formatted_content)
