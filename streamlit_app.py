@@ -493,11 +493,11 @@ def show_results_page(house_data):
     formatted_content = formatted_content.replace('Time saved over', '**Time saved over')
     formatted_content = formatted_content.replace(' hours', ' hours**')
     
-    # Format section headers
-    formatted_content = formatted_content.replace('Time Investment Analysis:', '## Time Investment Analysis:')
-    formatted_content = formatted_content.replace('Writing Time Investment Breakdown', '## Writing Time Investment Breakdown')
-    formatted_content = formatted_content.replace('Expert Insight', '## Expert Insight')
-    formatted_content = formatted_content.replace('Expert Validation', '## Expert Validation')
+    # Format section headers - make them subtitles, not big headers like in Replit app
+    formatted_content = formatted_content.replace('Time Investment Analysis:', '**Time Investment Analysis:**')
+    formatted_content = formatted_content.replace('Writing Time Investment Breakdown', '**Writing Time Investment Breakdown**')
+    formatted_content = formatted_content.replace('Expert Insight', '**Expert Insight**')
+    formatted_content = formatted_content.replace('Expert Validation', '**Expert Validation**')
     formatted_content = formatted_content.replace('🧹 Instead of', '\n\n🧹 **Instead of')
     formatted_content = formatted_content.replace('Month ', '\n\n## Month ')
     formatted_content = formatted_content.replace('Source:', '\n\n**Source:**')
