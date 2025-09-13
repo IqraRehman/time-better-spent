@@ -579,7 +579,7 @@ def show_results_page(house_data):
                 st.rerun()
         
         with c2:
-            st.link_button("🧹 Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True, key="schedule_cleaning")
+            st.link_button("🧹 Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True)
         
         # Debug line to confirm this section renders
         st.write("Debug: Bottom navigation section rendered")
