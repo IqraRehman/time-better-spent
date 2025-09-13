@@ -17,8 +17,6 @@ st.set_page_config(
 st.markdown("""
 <style>
     #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
     .stDeployButton {visibility: hidden;}
     .block-container {
         padding: 0 !important;
@@ -389,10 +387,11 @@ def show_results_page(house_data):
     # Custom CSS for honey color theme and box layout
     st.markdown("""
     <style>
-    /* Hide Streamlit chrome */
+    /* Hide Streamlit chrome - using specific selectors only */
     #MainMenu {visibility: hidden;}
     .stDeployButton {display: none;}
     header[data-testid="stHeader"] {display: none;}
+    footer[data-testid="stFooter"] {display: none;}
     
     /* Custom colors matching Replit app */
     :root {
@@ -569,17 +568,21 @@ def show_results_page(house_data):
     st.markdown("---")
     st.markdown("### Ready for the Next Step?")
     
-    # Bottom navigation buttons
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        if st.button("🔄 Calculate Again", use_container_width=True):
-            st.session_state.show_results = False
-            st.session_state.house_data = None
-            st.rerun()
-    
-    with col2:
-        st.link_button("🧹 Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True)
+    # Bottom navigation buttons - wrapped in container with unique keys
+    with st.container():
+        c1, c2 = st.columns(2)
+        
+        with c1:
+            if st.button("🔄 Calculate Again", use_container_width=True, key="calc_again"):
+                st.session_state.show_results = False
+                st.session_state.house_data = None
+                st.rerun()
+        
+        with c2:
+            st.link_button("🧹 Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True, key="schedule_cleaning")
+        
+        # Debug line to confirm this section renders
+        st.write("Debug: Bottom navigation section rendered")
 
 # Main app logic
 def main():
