@@ -499,7 +499,7 @@ def show_results_page(house_data):
     formatted_content = formatted_content.replace('Expert Insight', '**Expert Insight**')
     formatted_content = formatted_content.replace('Expert Validation', '**Expert Validation**')
     formatted_content = formatted_content.replace('🧹 Instead of', '\n\n🧹 **Instead of')
-    formatted_content = formatted_content.replace('Month ', '\n\n## Month ')
+    formatted_content = formatted_content.replace('Month ', '\n\n**Month ')
     formatted_content = formatted_content.replace('Source:', '\n\n**Source:**')
     formatted_content = formatted_content.replace('Expert Source:', '\n\n**Expert Source:**')
     formatted_content = formatted_content.replace('Reference:', '\n\n**Reference:**')
@@ -560,13 +560,13 @@ def show_results_page(house_data):
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("🔄 Calculate Again", use_container_width=True, type="secondary"):
+        if st.button("🔄 Calculate Again", use_container_width=True):
             st.session_state.show_results = False
             st.session_state.house_data = None
             st.rerun()
     
     with col2:
-        st.link_button("🧹 Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True, type="primary")
+        st.link_button("🧹 Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True)
 
 # Main app logic
 def main():
