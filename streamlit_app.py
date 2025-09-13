@@ -1,14 +1,11 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import json
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import math
-import requests
 from urllib.parse import quote
 
-# Configure page to exactly match Replit layout
+# Configure page
 st.set_page_config(
     page_title="Time Better Spent - Bee Friends Cleaners",
     page_icon="🧹",
@@ -16,304 +13,42 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Exact CSS to match Replit design structure with same color tokens
+# Hide Streamlit elements
 st.markdown("""
 <style>
-    /* Import Inter font to match Replit */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-    
-    /* CSS tokens - exact match to Replit theme.json */
-    :root {
-        --primary: 43 96% 56%;
-        --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
-        --muted-foreground: 215.4 16.3% 46.9%;
-        --border: 214.3 31.8% 91.4%;
-        --card: 0 0% 100%;
-    }
-    
-    /* Override Streamlit's default theme to match Replit exactly */
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
-        background: linear-gradient(to bottom, hsl(var(--primary) / 0.1), hsl(var(--background))) !important;
-        color: hsl(var(--foreground)) !important;
-    }
-    
-    /* Global styling to match Replit exactly */
-    html, body, [class*="css"] {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    }
-    
-    /* Main container with exact Replit gradient using tokens */
-    .main > div {
-        background: linear-gradient(to bottom, hsl(var(--primary) / 0.1), hsl(var(--background)));
-        min-height: 100vh;
-        padding: 1rem;
-    }
-    
-    /* Container matching max-w-2xl mx-auto */
-    .main-container {
-        max-width: 42rem;
-        margin: 0 auto;
-        padding-top: 2rem;
-    }
-    
-    .results-container {
-        max-width: 48rem;
-        margin: 0 auto;
-        padding-top: 2rem;
-    }
-    
-    /* Header styling - exact match to Replit */
-    .header-section {
-        text-align: center;
-        margin-bottom: 2rem;
-        padding-top: 2rem;
-    }
-    
-    .main-title {
-        font-size: 2.25rem;
-        font-weight: 700;
-        background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--primary) / 0.6));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 1rem;
-        line-height: 1.1;
-    }
-    
-    .main-subtitle {
-        color: hsl(var(--muted-foreground));
-        font-size: 1.125rem;
-        margin-bottom: 2rem;
-    }
-    
-    /* Card styling to match Replit Card component */
-    .replit-card {
-        background: hsl(var(--card));
-        border-radius: 0.5rem;
-        border: 1px solid hsl(var(--border));
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-        overflow: hidden;
-        margin: 1.5rem auto;
-        max-width: 36rem;
-    }
-    
-    .card-content {
-        padding: 1.5rem;
-    }
-    
-    /* Results specific styling */
-    .results-title {
-        font-size: 2.25rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-        text-align: center;
-        color: hsl(var(--foreground));
-    }
-    
-    .results-subtitle {
-        color: hsl(var(--muted-foreground));
-        font-size: 1.125rem;
-        margin-bottom: 2rem;
-        text-align: center;
-    }
-    
-    /* Activity card styling */
-    .activity-card {
-        background: hsl(var(--card));
-        border-radius: 0.5rem;
-        border: 1px solid hsl(var(--border));
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-        overflow: hidden;
-        margin: 1.5rem auto;
-    }
-    
-    /* Hero image section */
-    .hero-image {
-        height: 16rem;
-        background-size: cover;
-        background-position: center;
-        background-color: hsl(var(--muted-foreground) / 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: hsl(var(--muted-foreground));
-        font-size: 3rem;
-    }
-    
-    .activity-header {
-        padding: 1.5rem 1.5rem 0 1.5rem;
-    }
-    
-    .activity-title {
-        font-size: 1.875rem;
-        font-weight: 700;
-        color: hsl(var(--foreground));
-        margin-bottom: 0;
-    }
-    
-    .activity-content {
-        padding: 1.5rem;
-    }
-    
-    .activity-description {
-        font-size: 1.25rem;
-        color: hsl(var(--muted-foreground));
-        margin: 1.5rem 0;
-        line-height: 1.6;
-    }
-    
-    /* Time investment section - matches bg-primary/5 */
-    .time-investment {
-        background-color: hsl(var(--primary) / 0.05);
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-        margin: 1.5rem 0;
-    }
-    
-    .time-investment-label {
-        font-size: 1.125rem;
-        font-weight: 500;
-        color: hsl(var(--primary));
-        margin-bottom: 0.5rem;
-    }
-    
-    .time-investment-value {
-        color: hsl(var(--muted-foreground));
-        font-size: 1rem;
-    }
-    
-    /* Journey section styling */
-    .journey-section {
-        margin: 1.5rem 0;
-    }
-    
-    .journey-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: hsl(var(--primary));
-        margin-bottom: 1rem;
-    }
-    
-    .journey-content {
-        line-height: 1.75;
-        color: hsl(var(--foreground));
-    }
-    
-    /* Quote section - matches bg-primary/10 */
-    .quote-section {
-        background-color: hsl(var(--primary) / 0.1);
-        padding: 1.5rem;
-        border-radius: 0.5rem;
-        margin-top: 1.5rem;
-    }
-    
-    .quote-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: hsl(var(--primary));
-        margin-bottom: 0.5rem;
-    }
-    
-    .quote-subtitle {
-        color: hsl(var(--muted-foreground));
-        margin-bottom: 1rem;
-    }
-    
-    /* Share section */
-    .share-section {
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid hsl(var(--border));
-    }
-    
-    .share-title {
-        font-size: 1.125rem;
-        font-weight: 500;
-        color: hsl(var(--primary));
-        margin-bottom: 0.5rem;
-    }
-    
-    .share-description {
-        font-size: 0.875rem;
-        color: hsl(var(--muted-foreground));
-        margin-bottom: 1.5rem;
-    }
-    
-    /* Button styling to match Replit */
-    .stButton > button {
-        background-color: hsl(var(--primary)) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 0.375rem !important;
-        font-weight: 500 !important;
-        transition: all 0.2s !important;
-    }
-    
-    .stButton > button:hover {
-        background-color: hsl(var(--primary) / 0.9) !important;
-        transform: translateY(-1px) !important;
-    }
-    
-    /* Hide Streamlit elements */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     .stDeployButton {visibility: hidden;}
-    
-    /* Form styling */
-    .stNumberInput > div > div > input,
-    .stTextInput > div > div > input {
-        border-radius: 0.375rem !important;
-        border: 1px solid hsl(var(--border)) !important;
+    .block-container {
+        padding: 0 !important;
+        max-width: 100% !important;
     }
-    
-    .stNumberInput > div > div > input:focus,
-    .stTextInput > div > div > input:focus {
-        border-color: hsl(var(--primary)) !important;
-        box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1) !important;
+    .main > div {
+        padding: 0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # Core calculation function
 def calculate_cleaning_time(square_feet, bedrooms, bathrooms):
-    """Calculate cleaning time based on house specifications"""
     hours_per_clean = (square_feet / 750) + (bedrooms * 0.333) + (bathrooms * 0.333)
     total_minutes = round(hours_per_clean * 60)
     monthly_hours = round((total_minutes / 60) * 4, 1)
     return total_minutes, monthly_hours
 
-# Activity matching function
 def find_matching_activities(monthly_hours):
-    """Find activities that match the available time from cleaning"""
     total_hours = monthly_hours * 6
     
-    matching_activities = []
-    for activity in activities_data:
-        avg_hours = (activity["min_hours"] + activity["max_hours"]) / 2
-        if abs(total_hours - avg_hours) <= avg_hours * 0.1:
-            matching_activities.append(activity)
-    
-    if not matching_activities:
-        closest_match = min(activities_data, 
-                          key=lambda x: abs(total_hours - (x["min_hours"] + x["max_hours"]) / 2))
-        matching_activities = [closest_match]
-    
-    return matching_activities
-
-# Activities data with image URLs
-activities_data = [
-    {
-        "id": "cookie-baking",
-        "title": "Bake 52 Different Types of Cookies!",
-        "description": "Transform your cleaning time into a delicious baking adventure! From classic chocolate chip to exotic lavender shortbread, master the art of cookie making one week at a time.",
-        "category": "culinary",
-        "subcategory": "baking", 
-        "min_hours": 40,
-        "max_hours": 45,
-        "image_url": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&h=400&fit=crop",
-        "timeline": """🍪 **Your Cookie Journey (40-45 hours total)**
+    activities_data = [
+        {
+            "id": "cookie-baking",
+            "title": "Bake 52 Different Types of Cookies!",
+            "description": "Transform your cleaning time into a delicious baking adventure! From classic chocolate chip to exotic lavender shortbread, master the art of cookie making one week at a time.",
+            "min_hours": 40,
+            "max_hours": 45,
+            "imageUrl": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&h=400&fit=crop",
+            "detailedTimeline": """🍪 **Your Cookie Journey (40-45 hours total)**
 
 **Foundation Phase (15 hours)**
 Instead of cleaning for 16 hours:
@@ -337,206 +72,338 @@ Each 3-hour baking session produces:
 • 24-36 cookies
 • New skill mastery
 • Shareable treats""",
-        "expert_quote": "A complete beginner can master basic to intermediate cookie baking in 40-45 hours of dedicated practice. - Christina Tosi, James Beard Award Winner"
-    },
-    {
-        "id": "watercolor-painting", 
-        "title": "Master Watercolor Painting",
-        "description": "Turn your cleaning hours into beautiful watercolor masterpieces! Learn techniques from basic washes to advanced color mixing and create stunning artwork.",
-        "category": "art",
-        "subcategory": "painting",
-        "min_hours": 30,
-        "max_hours": 40,
-        "image_url": "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=400&fit=crop",
-        "timeline": """🎨 **Your Watercolor Journey (30-40 hours total)**
+            "timeRequirement": {"minHours": 40, "maxHours": 45}
+        }
+    ]
+    
+    matching_activities = []
+    for activity in activities_data:
+        avg_hours = (activity["min_hours"] + activity["max_hours"]) / 2
+        if abs(total_hours - avg_hours) <= avg_hours * 0.1:
+            matching_activities.append(activity)
+    
+    if not matching_activities:
+        closest_match = min(activities_data, 
+                          key=lambda x: abs(total_hours - (x["min_hours"] + x["max_hours"]) / 2))
+        matching_activities = [closest_match]
+    
+    return matching_activities
 
-**Foundation Skills (12 hours)**
-• Color theory and mixing (4 hours)
-• Brush techniques and control (4 hours) 
-• Paper and material knowledge (4 hours)
+# Initialize session state
+if 'show_results' not in st.session_state:
+    st.session_state.show_results = False
+if 'house_data' not in st.session_state:
+    st.session_state.house_data = {}
 
-**Core Techniques (18 hours)**
-• Wet-on-wet techniques (6 hours)
-• Wet-on-dry precision work (6 hours)
-• Layering and glazing (6 hours)
+def show_home_page():
+    # Embed exact React HTML structure with Tailwind CSS
+    components.html("""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: 'hsl(43, 96%, 56%)',
+                            background: 'hsl(0, 0%, 100%)',
+                            foreground: 'hsl(222.2, 84%, 4.9%)',
+                            'muted-foreground': 'hsl(215.4, 16.3%, 46.9%)',
+                            border: 'hsl(214.3, 31.8%, 91.4%)',
+                            card: 'hsl(0, 0%, 100%)'
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            body { font-family: 'Inter', sans-serif; }
+            .gradient-text {
+                background: linear-gradient(to right, hsl(43, 96%, 56%), hsl(43, 96%, 56%, 0.6));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        </style>
+    </head>
+    <body class="min-h-screen bg-gradient-to-b from-primary/10 to-background p-4">
+        <div class="max-w-2xl mx-auto">
+            <div class="text-center mb-8 pt-8">
+                <h1 class="text-4xl font-bold gradient-text mb-4">
+                    Time Better Spent
+                </h1>
+                <p class="text-muted-foreground text-lg">
+                    See what amazing things you could do instead of cleaning your house
+                </p>
+            </div>
 
-**Advanced Projects (10 hours)**
-• Landscape compositions (4 hours)
-• Portrait techniques (3 hours)
-• Abstract expressions (3 hours)
+            <div class="max-w-xl mx-auto">
+                <div class="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
+                    <div class="p-6">
+                        <form id="houseForm" onsubmit="submitForm(event)">
+                            <div class="grid grid-cols-3 gap-4 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Square Feet</label>
+                                    <input type="number" id="squareFeet" min="500" max="10000" value="2000" step="100"
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Number of Bedrooms</label>
+                                    <input type="number" id="bedrooms" min="1" max="5" value="3" step="1"
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Number of Bathrooms</label>
+                                    <input type="number" id="bathrooms" min="1" max="6" value="2" step="1"
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+                            <button type="submit" 
+                                    class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+                                ✨ Show Me What I Could Do Instead!
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-What You'll Create:
-• 15+ finished paintings
-• Personal art style
-• Portfolio-ready pieces
-• Relaxation and mindfulness""",
-        "expert_quote": "30-40 hours of focused watercolor practice will develop solid foundational skills and personal artistic voice. - David Hockney"
-    }
-]
+        <script>
+            function submitForm(event) {
+                event.preventDefault();
+                const squareFeet = document.getElementById('squareFeet').value;
+                const bedrooms = document.getElementById('bedrooms').value;
+                const bathrooms = document.getElementById('bathrooms').value;
+                
+                // Send data to Streamlit
+                window.parent.postMessage({
+                    type: 'calculate',
+                    data: {
+                        squareFeet: parseInt(squareFeet),
+                        bedrooms: parseInt(bedrooms),
+                        bathrooms: parseInt(bathrooms)
+                    }
+                }, '*');
+            }
+        </script>
+    </body>
+    </html>
+    """, height=600)
 
-# Main app function
-def main():
-    # Home page layout
-    st.markdown('<div class="main-container">', unsafe_allow_html=True)
-    
-    # Header section - exact match to Replit
-    st.markdown("""
-    <div class="header-section">
-        <h1 class="main-title">Time Better Spent</h1>
-        <p class="main-subtitle">See what amazing things you could do instead of cleaning your house</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Card container - exact match to Replit Card
-    st.markdown('<div class="replit-card"><div class="card-content">', unsafe_allow_html=True)
-    
-    # Form inputs in columns
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        square_feet = st.number_input(
-            "Square Feet",
-            min_value=500,
-            max_value=10000,
-            value=2000,
-            step=100
-        )
-    
-    with col2:
-        bedrooms = st.number_input(
-            "Number of Bedrooms", 
-            min_value=1,
-            max_value=5,
-            value=3,
-            step=1
-        )
-    
-    with col3:
-        bathrooms = st.number_input(
-            "Number of Bathrooms",
-            min_value=1, 
-            max_value=6,
-            value=2,
-            step=1
-        )
-    
-    # Calculate button
-    if st.button("Show Me What I Could Do Instead!", use_container_width=True):
-        calculate_and_display_results(square_feet, bedrooms, bathrooms)
-    
-    st.markdown('</div></div></div>', unsafe_allow_html=True)
-
-def calculate_and_display_results(square_feet, bedrooms, bathrooms):
-    # Calculate cleaning time
-    total_minutes, monthly_hours = calculate_cleaning_time(square_feet, bedrooms, bathrooms)
-    
-    # Results container
-    st.markdown('<div class="results-container">', unsafe_allow_html=True)
-    
-    # Header section
-    st.markdown(f"""
-    <div class="header-section">
-        <h1 class="results-title">Instead of spending {round(monthly_hours)} hours cleaning each month...</h1>
-        <p class="results-subtitle">Here's something amazing you could do!</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Find matching activities  
+def show_results_page(house_data):
+    monthly_hours = (house_data['calculatedMinutes'] / 60) * 4
     matching_activities = find_matching_activities(monthly_hours)
     activity = matching_activities[0]
     
-    # Activity card - exact structure match
-    st.markdown(f"""
-    <div class="activity-card">
-        <div class="hero-image" style="background-image: url('{activity['image_url']}');">
-            🎨
-        </div>
-        <div class="activity-header">
-            <h2 class="activity-title">{activity['title']}</h2>
-        </div>
-        <div class="activity-content">
-            <p class="activity-description">{activity['description']}</p>
-            
-            <div class="time-investment">
-                <p class="time-investment-label">Time Investment:</p>
-                <p class="time-investment-value">{activity['min_hours']}-{activity['max_hours']} hours total</p>
+    # Embed exact React results structure
+    components.html(f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <script>
+            tailwind.config = {{
+                theme: {{
+                    extend: {{
+                        colors: {{
+                            primary: 'hsl(43, 96%, 56%)',
+                            background: 'hsl(0, 0%, 100%)',
+                            foreground: 'hsl(222.2, 84%, 4.9%)',
+                            'muted-foreground': 'hsl(215.4, 16.3%, 46.9%)',
+                            border: 'hsl(214.3, 31.8%, 91.4%)',
+                            card: 'hsl(0, 0%, 100%)'
+                        }}
+                    }}
+                }}
+            }}
+        </script>
+        <style>
+            body {{ font-family: 'Inter', sans-serif; }}
+            .prose pre {{ white-space: pre-line; }}
+        </style>
+    </head>
+    <body class="min-h-screen bg-gradient-to-b from-primary/10 to-background p-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-8 pt-8">
+                <h1 class="text-4xl font-bold mb-4">
+                    Instead of spending {round(monthly_hours)} hours cleaning each month...
+                </h1>
+                <p class="text-muted-foreground text-lg mb-8">
+                    Here's something amazing you could do!
+                </p>
             </div>
-            
-            <div class="journey-section">
-                <h3 class="journey-title">Your Journey</h3>
-                <div class="journey-content">
-                    {activity['timeline'].replace(chr(10), '<br>')}
+
+            <div class="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
+                <div class="h-64 bg-cover bg-center" style="background-image: url('{activity['imageUrl']}')"></div>
+                
+                <div class="p-6">
+                    <h2 class="text-3xl font-bold mb-4">{activity['title']}</h2>
+                </div>
+                
+                <div class="px-6 pb-6 space-y-6">
+                    <p class="text-xl text-muted-foreground">
+                        {activity['description']}
+                    </p>
+
+                    <div class="bg-primary/5 p-6 rounded-lg">
+                        <p class="text-lg font-medium text-primary mb-2">
+                            Time Investment:
+                        </p>
+                        <p class="text-muted-foreground">
+                            {activity['timeRequirement']['minHours']}-{activity['timeRequirement']['maxHours']} hours total
+                        </p>
+                    </div>
+
+                    <div class="prose prose-lg">
+                        <h3 class="text-2xl font-semibold text-primary mb-4">
+                            Your Journey
+                        </h3>
+                        <div class="whitespace-pre-line">
+                            {activity['detailedTimeline']}
+                        </div>
+                    </div>
+
+                    <div class="bg-primary/10 p-6 rounded-lg mt-6">
+                        <div class="mb-6">
+                            <h3 class="text-2xl font-semibold text-primary mb-2">
+                                Ready to Get Started?
+                            </h3>
+                            <p class="text-muted-foreground mb-4">
+                                Get your house professionally cleaned and use your free time for {activity['title'].lower()}!
+                                Get a free quote now and receive a special $40 off coupon.
+                            </p>
+                        </div>
+                        
+                        <form class="space-y-4" onsubmit="submitQuote(event)">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Full Name</label>
+                                    <input type="text" id="name" required
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Email</label>
+                                    <input type="email" id="email" required
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Zip Code</label>
+                                    <input type="text" id="zip" required
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Phone (Optional)</label>
+                                    <input type="tel" id="phone"
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+                            
+                            <div class="bg-primary/5 p-4 rounded-lg">
+                                <p class="text-lg font-medium text-primary mb-2">House Details:</p>
+                                <p class="text-muted-foreground">{house_data['squareFeet']} sq ft, {house_data['bedrooms']} bedrooms, {house_data['bathrooms']} bathrooms</p>
+                            </div>
+                            
+                            <button type="submit" 
+                                    class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-all duration-200">
+                                🎉 Get My Free Quote + $40 Off!
+                            </button>
+                        </form>
+                        
+                        <div class="mt-6 pt-6 border-t">
+                            <p class="text-lg font-medium text-primary mb-4">
+                                🎉 Spread the Joy! Help Friends Reclaim Their Time
+                            </p>
+                            <p class="text-sm text-muted-foreground mb-6">
+                                Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for {activity['title'].lower()}! Together, let's transform cleaning hours into moments of joy.
+                            </p>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="shareTwitter()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded text-sm">📱 Twitter</button>
+                                <button onclick="shareFacebook()" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded text-sm">📘 Facebook</button>
+                                <button onclick="shareLinkedIn()" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm">💼 LinkedIn</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="quote-section">
-                <h3 class="quote-title">Ready to Get Started?</h3>
-                <p class="quote-subtitle">Get your house professionally cleaned and use your free time for {activity['title'].lower()}! Get a free quote now and receive a special $40 off coupon.</p>
-    """, unsafe_allow_html=True)
-    
-    # Quote form
-    with st.form("quote_form"):
-        form_col1, form_col2 = st.columns(2)
-        
-        with form_col1:
-            name = st.text_input("Full Name")
-            email = st.text_input("Email")
-        
-        with form_col2:
-            zip_code = st.text_input("Zip Code")
-            phone = st.text_input("Phone (Optional)")
-        
-        st.write(f"**House:** {square_feet} sq ft, {bedrooms} bedrooms, {bathrooms} bathrooms")
-        
-        submitted = st.form_submit_button("🎉 Get My Free Quote + $40 Off!")
-        
-        if submitted:
-            if name and email and zip_code:
-                st.success("🎉 Thank you! We'll send your personalized quote within 24 hours, plus your $40 off coupon!")
-                st.balloons()
-            else:
-                st.error("Please fill in all required fields")
-    
-    # Share section
-    share_text = f"I could save {round(monthly_hours)} hours per month by hiring Bee Friends Cleaners! Instead of cleaning, I could {activity['title'].lower()}. Use code TAKE40OFF for $40 off!"
-    
-    st.markdown(f"""
-        <div class="share-section">
-            <p class="share-title">🎉 Spread the Joy! Help Friends Reclaim Their Time</p>
-            <p class="share-description">Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends!</p>
-        </div>
-    </div>
-    </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Share buttons
-    share_col1, share_col2, share_col3 = st.columns(3)
-    
-    with share_col1:
-        if st.button("📱 Share on Twitter"):
-            twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}"
-            st.markdown(f"[Open Twitter]({twitter_url})")
-    
-    with share_col2:
-        if st.button("📘 Share on Facebook"):
-            facebook_url = f"https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com&quote={quote(share_text)}"
-            st.markdown(f"[Open Facebook]({facebook_url})")
-    
-    with share_col3:  
-        if st.button("💼 Share on LinkedIn"):
-            linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com&summary={quote(share_text)}"
-            st.markdown(f"[Open LinkedIn]({linkedin_url})")
 
-# Sidebar
-with st.sidebar:
-    st.header("About Bee Friends Cleaners")
-    st.write("Professional house cleaning services with eco-friendly products and exceptional customer care.")
-    
-    st.subheader("Contact")
-    st.write("📞 (555) 123-CLEAN")
-    st.write("📧 hello@beefriends.com")
-    st.write("🌐 beefriendcleaners.com")
+            <div class="text-center mt-8">
+                <button onclick="goHome()" class="mr-4 border border-border bg-background hover:bg-primary/5 text-foreground py-2 px-6 rounded-md">
+                    Calculate Again
+                </button>
+                <button class="bg-primary hover:bg-primary/90 text-white py-2 px-6 rounded-md">
+                    Schedule Cleaning
+                </button>
+            </div>
+        </div>
+
+        <script>
+            function submitQuote(event) {{
+                event.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const zip = document.getElementById('zip').value;
+                
+                if (name && email && zip) {{
+                    alert('🎉 Thank you! We\\'ll send your personalized quote within 24 hours, plus your $40 off coupon!');
+                }} else {{
+                    alert('Please fill in all required fields (Name, Email, and Zip Code)');
+                }}
+            }}
+            
+            function shareTwitter() {{
+                const text = 'I could save {round(monthly_hours)} hours per month by hiring Bee Friends Cleaners! Use code TAKE40OFF for $40 off!';
+                window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text));
+            }}
+            
+            function shareFacebook() {{
+                window.open('https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com');
+            }}
+            
+            function shareLinkedIn() {{
+                window.open('https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com');
+            }}
+            
+            function goHome() {{
+                window.parent.postMessage({{type: 'goHome'}}, '*');
+            }}
+        </script>
+    </body>
+    </html>
+    """, height=1200)
+
+# Main app logic
+def main():
+    # Listen for messages from embedded HTML
+    if st.session_state.show_results:
+        show_results_page(st.session_state.house_data)
+    else:
+        show_home_page()
+
+# Handle form submission (would need additional setup for message passing)
+st.sidebar.header("Controls")
+if st.sidebar.button("Reset to Home"):
+    st.session_state.show_results = False
+    st.rerun()
+
+# Test data for demo
+if st.sidebar.button("Show Results Demo"):
+    total_minutes, monthly_hours = calculate_cleaning_time(2000, 3, 2)
+    st.session_state.house_data = {
+        'squareFeet': 2000,
+        'bedrooms': 3,
+        'bathrooms': 2,
+        'calculatedMinutes': total_minutes
+    }
+    st.session_state.show_results = True
+    st.rerun()
 
 if __name__ == "__main__":
     main()
