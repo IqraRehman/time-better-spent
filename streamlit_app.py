@@ -562,7 +562,7 @@ def show_results_page(house_data):
         </script>
     </body>
     </html>
-    """, height=4000, scrolling=False)
+    """, height=3200, scrolling=False)
 
 # Main app logic
 def main():
