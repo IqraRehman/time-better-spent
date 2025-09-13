@@ -96,7 +96,7 @@ if 'house_data' not in st.session_state:
     st.session_state.house_data = {}
 
 def show_home_page():
-    # Embed exact React HTML structure with working form
+    # Embed exact React HTML structure with better debugging
     form_html = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -145,48 +145,66 @@ def show_home_page():
             <div class="max-w-xl mx-auto">
                 <div class="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
                     <div class="p-6">
-                        <div class="space-y-4 mb-6">
-                            <div>
-                                <label class="block text-sm font-medium text-foreground mb-2">Square Feet</label>
-                                <input type="number" id="squareFeet" min="500" max="10000" value="2300" step="100"
-                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                        <form id="houseForm">
+                            <div class="space-y-4 mb-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Square Feet</label>
+                                    <input type="number" id="squareFeet" name="squareFeet" min="500" max="10000" value="2300" step="100"
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Number of Bedrooms</label>
+                                    <input type="number" id="bedrooms" name="bedrooms" min="1" max="5" value="3" step="1"
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-foreground mb-2">Number of Bathrooms</label>
+                                    <input type="number" id="bathrooms" name="bathrooms" min="1" max="6" value="2" step="1"
+                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-foreground mb-2">Number of Bedrooms</label>
-                                <input type="number" id="bedrooms" min="1" max="5" value="3" step="1"
-                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-foreground mb-2">Number of Bathrooms</label>
-                                <input type="number" id="bathrooms" min="1" max="6" value="2" step="1"
-                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                            </div>
-                        </div>
-                        <button type="button" id="calculateBtn"
-                                class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-                            ✨ Show Me What I Could Do Instead!
-                        </button>
+                            <button type="submit" id="calculateBtn"
+                                    class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+                                ✨ Show Me What I Could Do Instead!
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 
         <script>
-            document.getElementById('calculateBtn').addEventListener('click', function() {{
+            document.getElementById('houseForm').addEventListener('submit', function(event) {{
+                event.preventDefault();
+                
+                // Get form values
                 const squareFeet = parseInt(document.getElementById('squareFeet').value);
                 const bedrooms = parseInt(document.getElementById('bedrooms').value);
                 const bathrooms = parseInt(document.getElementById('bathrooms').value);
                 
-                // Create URL with parameters to trigger Streamlit calculation
+                // Debug: Show alert with values being sent
+                console.log('Form values:', {{ squareFeet, bedrooms, bathrooms }});
+                
+                // Validate inputs
+                if (isNaN(squareFeet) || isNaN(bedrooms) || isNaN(bathrooms)) {{
+                    alert('Please enter valid numbers for all fields');
+                    return;
+                }}
+                
+                // Create URL with parameters
                 const params = new URLSearchParams({{
                     'calculate': 'true',
-                    'sqft': squareFeet,
-                    'bedrooms': bedrooms,
-                    'bathrooms': bathrooms
+                    'sqft': squareFeet.toString(),
+                    'bedrooms': bedrooms.toString(),
+                    'bathrooms': bathrooms.toString()
                 }});
                 
+                // Debug: Show URL being created
+                const newUrl = window.location.origin + window.location.pathname + '?' + params.toString();
+                console.log('Redirecting to:', newUrl);
+                
                 // Redirect to trigger calculation
-                window.location.href = window.location.origin + window.location.pathname + '?' + params.toString();
+                window.location.href = newUrl;
             }});
         </script>
     </body>
@@ -309,6 +327,7 @@ def show_results_page(house_data):
                             <div class="bg-primary/5 p-4 rounded-lg">
                                 <p class="text-lg font-medium text-primary mb-2">House Details:</p>
                                 <p class="text-muted-foreground">{house_data['squareFeet']} sq ft, {house_data['bedrooms']} bedrooms, {house_data['bathrooms']} bathrooms</p>
+                                <p class="text-sm text-muted-foreground mt-2">Estimated cleaning time: {house_data['calculatedMinutes']} minutes per session, {round(monthly_hours)} hours per month</p>
                             </div>
                             
                             <button type="submit" 
@@ -381,8 +400,16 @@ def show_results_page(house_data):
 
 # Main app logic
 def main():
-    # Check for URL parameters to handle form submission
+    # Debug: Show current query parameters
     query_params = st.query_params
+    
+    # Add debugging info in sidebar (removed in production)
+    with st.sidebar:
+        st.write("Debug Info:")
+        st.write("Query params:", dict(query_params))
+        st.write("Show results:", st.session_state.show_results)
+        if st.session_state.house_data:
+            st.write("House data:", st.session_state.house_data)
     
     if query_params.get("calculate") == "true":
         try:
@@ -390,8 +417,12 @@ def main():
             bedrooms = int(query_params.get("bedrooms", 3))
             bathrooms = int(query_params.get("bathrooms", 2))
             
+            st.sidebar.write(f"Parsed values: {square_feet} sqft, {bedrooms} bed, {bathrooms} bath")
+            
             # Calculate cleaning time
             total_minutes, monthly_hours = calculate_cleaning_time(square_feet, bedrooms, bathrooms)
+            
+            st.sidebar.write(f"Calculated: {total_minutes} min, {monthly_hours} hrs/month")
             
             # Store in session state
             st.session_state.house_data = {
@@ -406,7 +437,8 @@ def main():
             st.query_params.clear()
             st.rerun()
             
-        except (ValueError, TypeError):
+        except (ValueError, TypeError) as e:
+            st.sidebar.error(f"Error parsing parameters: {e}")
             st.error("Invalid input parameters. Please try again.")
             return
     
