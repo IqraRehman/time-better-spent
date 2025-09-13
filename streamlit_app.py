@@ -445,7 +445,7 @@ def show_results_page(house_data):
     """, unsafe_allow_html=True)
     
     # Activity card with image
-    st.image(activity['imageUrl'], use_column_width=True)
+    st.image(activity['imageUrl'], use_container_width=True)
     
     # Activity title and description
     st.title(activity['title'])
@@ -466,8 +466,20 @@ def show_results_page(house_data):
     
     # Your Journey section
     st.header("Your Journey")
+    
+    # Format timeline content with proper spacing
+    timeline_content = activity['detailedTimeline']
+    
+    # Split into sections and add spacing
+    formatted_content = timeline_content.replace('\n\n', '\n\n---\n\n')
+    formatted_content = formatted_content.replace('🧹 Instead of', '\n\n🧹 **Instead of')
+    formatted_content = formatted_content.replace('Month ', '\n\n## Month ')
+    formatted_content = formatted_content.replace('Source:', '\n\n**Source:**')
+    formatted_content = formatted_content.replace('Expert Source:', '\n\n**Expert Source:**')
+    formatted_content = formatted_content.replace('Reference:', '\n\n**Reference:**')
+    
     with st.expander("See detailed timeline", expanded=True):
-        st.markdown(activity['detailedTimeline'])
+        st.markdown(formatted_content)
     
     # Ready to Get Started section
     st.header("Ready to Get Started?")
