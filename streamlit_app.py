@@ -146,10 +146,10 @@ def show_home_page():
                 <div class="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
                     <div class="p-6">
                         <form id="houseForm" onsubmit="submitForm(event)">
-                            <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="space-y-4 mb-6">
                                 <div>
                                     <label class="block text-sm font-medium text-foreground mb-2">Square Feet</label>
-                                    <input type="number" id="squareFeet" min="500" max="10000" value="2000" step="100"
+                                    <input type="number" id="squareFeet" min="500" max="10000" value="2300" step="100"
                                            class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
                                 </div>
                                 <div>
