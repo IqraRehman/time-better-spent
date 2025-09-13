@@ -96,8 +96,8 @@ if 'house_data' not in st.session_state:
     st.session_state.house_data = {}
 
 def show_home_page():
-    # Embed exact React HTML structure with Tailwind CSS
-    components.html("""
+    # Embed exact React HTML structure with working form
+    form_html = f"""
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -106,29 +106,29 @@ def show_home_page():
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
         <script>
-            tailwind.config = {
-                theme: {
-                    extend: {
-                        colors: {
+            tailwind.config = {{
+                theme: {{
+                    extend: {{
+                        colors: {{
                             primary: 'hsl(43, 96%, 56%)',
                             background: 'hsl(0, 0%, 100%)',
                             foreground: 'hsl(222.2, 84%, 4.9%)',
                             'muted-foreground': 'hsl(215.4, 16.3%, 46.9%)',
                             border: 'hsl(214.3, 31.8%, 91.4%)',
                             card: 'hsl(0, 0%, 100%)'
-                        }
-                    }
-                }
-            }
+                        }}
+                    }}
+                }}
+            }}
         </script>
         <style>
-            body { font-family: 'Inter', sans-serif; }
-            .gradient-text {
+            body {{ font-family: 'Inter', sans-serif; }}
+            .gradient-text {{
                 background: linear-gradient(to right, hsl(43, 96%, 56%), hsl(43, 96%, 56%, 0.6));
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
-            }
+            }}
         </style>
     </head>
     <body class="min-h-screen bg-gradient-to-b from-primary/10 to-background p-4">
@@ -145,55 +145,55 @@ def show_home_page():
             <div class="max-w-xl mx-auto">
                 <div class="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
                     <div class="p-6">
-                        <form id="houseForm" onsubmit="submitForm(event)">
-                            <div class="space-y-4 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-foreground mb-2">Square Feet</label>
-                                    <input type="number" id="squareFeet" min="500" max="10000" value="2300" step="100"
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-foreground mb-2">Number of Bedrooms</label>
-                                    <input type="number" id="bedrooms" min="1" max="5" value="3" step="1"
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-foreground mb-2">Number of Bathrooms</label>
-                                    <input type="number" id="bathrooms" min="1" max="6" value="2" step="1"
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                </div>
+                        <div class="space-y-4 mb-6">
+                            <div>
+                                <label class="block text-sm font-medium text-foreground mb-2">Square Feet</label>
+                                <input type="number" id="squareFeet" min="500" max="10000" value="2300" step="100"
+                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
                             </div>
-                            <button type="submit" 
-                                    class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
-                                ✨ Show Me What I Could Do Instead!
-                            </button>
-                        </form>
+                            <div>
+                                <label class="block text-sm font-medium text-foreground mb-2">Number of Bedrooms</label>
+                                <input type="number" id="bedrooms" min="1" max="5" value="3" step="1"
+                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-foreground mb-2">Number of Bathrooms</label>
+                                <input type="number" id="bathrooms" min="1" max="6" value="2" step="1"
+                                       class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+                        </div>
+                        <button type="button" id="calculateBtn"
+                                class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg">
+                            ✨ Show Me What I Could Do Instead!
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
         <script>
-            function submitForm(event) {
-                event.preventDefault();
-                const squareFeet = document.getElementById('squareFeet').value;
-                const bedrooms = document.getElementById('bedrooms').value;
-                const bathrooms = document.getElementById('bathrooms').value;
+            document.getElementById('calculateBtn').addEventListener('click', function() {{
+                const squareFeet = parseInt(document.getElementById('squareFeet').value);
+                const bedrooms = parseInt(document.getElementById('bedrooms').value);
+                const bathrooms = parseInt(document.getElementById('bathrooms').value);
                 
-                // Send data to Streamlit
-                window.parent.postMessage({
-                    type: 'calculate',
-                    data: {
-                        squareFeet: parseInt(squareFeet),
-                        bedrooms: parseInt(bedrooms),
-                        bathrooms: parseInt(bathrooms)
-                    }
-                }, '*');
-            }
+                // Create URL with parameters to trigger Streamlit calculation
+                const params = new URLSearchParams({{
+                    'calculate': 'true',
+                    'sqft': squareFeet,
+                    'bedrooms': bedrooms,
+                    'bathrooms': bathrooms
+                }});
+                
+                // Redirect to trigger calculation
+                window.location.href = window.location.origin + window.location.pathname + '?' + params.toString();
+            }});
         </script>
     </body>
     </html>
-    """, height=600)
+    """
+    
+    components.html(form_html, height=600)
 
 def show_results_page(house_data):
     monthly_hours = (house_data['calculatedMinutes'] / 60) * 4
@@ -372,7 +372,7 @@ def show_results_page(house_data):
             }}
             
             function goHome() {{
-                window.parent.postMessage({{type: 'goHome'}}, '*');
+                window.location.href = window.location.origin + window.location.pathname;
             }}
         </script>
     </body>
@@ -381,29 +381,40 @@ def show_results_page(house_data):
 
 # Main app logic
 def main():
-    # Listen for messages from embedded HTML
+    # Check for URL parameters to handle form submission
+    query_params = st.query_params
+    
+    if query_params.get("calculate") == "true":
+        try:
+            square_feet = int(query_params.get("sqft", 2300))
+            bedrooms = int(query_params.get("bedrooms", 3))
+            bathrooms = int(query_params.get("bathrooms", 2))
+            
+            # Calculate cleaning time
+            total_minutes, monthly_hours = calculate_cleaning_time(square_feet, bedrooms, bathrooms)
+            
+            # Store in session state
+            st.session_state.house_data = {
+                'squareFeet': square_feet,
+                'bedrooms': bedrooms,
+                'bathrooms': bathrooms,
+                'calculatedMinutes': total_minutes
+            }
+            st.session_state.show_results = True
+            
+            # Clear URL parameters and rerun
+            st.query_params.clear()
+            st.rerun()
+            
+        except (ValueError, TypeError):
+            st.error("Invalid input parameters. Please try again.")
+            return
+    
+    # Show appropriate page
     if st.session_state.show_results:
         show_results_page(st.session_state.house_data)
     else:
         show_home_page()
-
-# Handle form submission (would need additional setup for message passing)
-st.sidebar.header("Controls")
-if st.sidebar.button("Reset to Home"):
-    st.session_state.show_results = False
-    st.rerun()
-
-# Test data for demo
-if st.sidebar.button("Show Results Demo"):
-    total_minutes, monthly_hours = calculate_cleaning_time(2000, 3, 2)
-    st.session_state.house_data = {
-        'squareFeet': 2000,
-        'bedrooms': 3,
-        'bathrooms': 2,
-        'calculatedMinutes': total_minutes
-    }
-    st.session_state.show_results = True
-    st.rerun()
 
 if __name__ == "__main__":
     main()
