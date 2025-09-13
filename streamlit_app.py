@@ -523,17 +523,21 @@ def show_results_page(house_data):
         linkedin_url = "https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com"
         st.link_button("💼 LinkedIn", linkedin_url, use_container_width=True)
     
-    # Bottom navigation
+    # Add spacing before bottom navigation
+    st.markdown("---")
+    st.markdown("### Ready for the Next Step?")
+    
+    # Bottom navigation buttons
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("Calculate Again", use_container_width=True):
+        if st.button("🔄 Calculate Again", use_container_width=True, type="secondary"):
             st.session_state.show_results = False
             st.session_state.house_data = None
             st.rerun()
     
     with col2:
-        st.link_button("Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True)
+        st.link_button("🧹 Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True, type="primary")
 
 # Main app logic
 def main():
