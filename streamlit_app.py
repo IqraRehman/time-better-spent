@@ -16,20 +16,36 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Exact CSS to match Replit design structure
+# Exact CSS to match Replit design structure with same color tokens
 st.markdown("""
 <style>
     /* Import Inter font to match Replit */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    /* CSS tokens - exact match to Replit theme.json */
+    :root {
+        --primary: 43 96% 56%;
+        --background: 0 0% 100%;
+        --foreground: 222.2 84% 4.9%;
+        --muted-foreground: 215.4 16.3% 46.9%;
+        --border: 214.3 31.8% 91.4%;
+        --card: 0 0% 100%;
+    }
+    
+    /* Override Streamlit's default theme to match Replit exactly */
+    .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] {
+        background: linear-gradient(to bottom, hsl(var(--primary) / 0.1), hsl(var(--background))) !important;
+        color: hsl(var(--foreground)) !important;
+    }
     
     /* Global styling to match Replit exactly */
     html, body, [class*="css"] {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
     
-    /* Main container with exact Replit gradient */
+    /* Main container with exact Replit gradient using tokens */
     .main > div {
-        background: linear-gradient(to bottom, hsl(43, 96%, 56%, 0.1), white);
+        background: linear-gradient(to bottom, hsl(var(--primary) / 0.1), hsl(var(--background)));
         min-height: 100vh;
         padding: 1rem;
     }
@@ -57,7 +73,7 @@ st.markdown("""
     .main-title {
         font-size: 2.25rem;
         font-weight: 700;
-        background: linear-gradient(to right, hsl(43, 96%, 56%), hsla(43, 96%, 56%, 0.6));
+        background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--primary) / 0.6));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -66,16 +82,16 @@ st.markdown("""
     }
     
     .main-subtitle {
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
         font-size: 1.125rem;
         margin-bottom: 2rem;
     }
     
     /* Card styling to match Replit Card component */
     .replit-card {
-        background: white;
+        background: hsl(var(--card));
         border-radius: 0.5rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid hsl(var(--border));
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         overflow: hidden;
         margin: 1.5rem auto;
@@ -92,11 +108,11 @@ st.markdown("""
         font-weight: 700;
         margin-bottom: 1rem;
         text-align: center;
-        color: #111827;
+        color: hsl(var(--foreground));
     }
     
     .results-subtitle {
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
         font-size: 1.125rem;
         margin-bottom: 2rem;
         text-align: center;
@@ -104,9 +120,9 @@ st.markdown("""
     
     /* Activity card styling */
     .activity-card {
-        background: white;
+        background: hsl(var(--card));
         border-radius: 0.5rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid hsl(var(--border));
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         overflow: hidden;
         margin: 1.5rem auto;
@@ -117,11 +133,11 @@ st.markdown("""
         height: 16rem;
         background-size: cover;
         background-position: center;
-        background-color: #f3f4f6;
+        background-color: hsl(var(--muted-foreground) / 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
         font-size: 3rem;
     }
     
@@ -132,7 +148,7 @@ st.markdown("""
     .activity-title {
         font-size: 1.875rem;
         font-weight: 700;
-        color: #111827;
+        color: hsl(var(--foreground));
         margin-bottom: 0;
     }
     
@@ -142,14 +158,14 @@ st.markdown("""
     
     .activity-description {
         font-size: 1.25rem;
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
         margin: 1.5rem 0;
         line-height: 1.6;
     }
     
     /* Time investment section - matches bg-primary/5 */
     .time-investment {
-        background-color: hsla(43, 96%, 56%, 0.05);
+        background-color: hsl(var(--primary) / 0.05);
         padding: 1.5rem;
         border-radius: 0.5rem;
         margin: 1.5rem 0;
@@ -158,12 +174,12 @@ st.markdown("""
     .time-investment-label {
         font-size: 1.125rem;
         font-weight: 500;
-        color: hsl(43, 96%, 56%);
+        color: hsl(var(--primary));
         margin-bottom: 0.5rem;
     }
     
     .time-investment-value {
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
         font-size: 1rem;
     }
     
@@ -175,18 +191,18 @@ st.markdown("""
     .journey-title {
         font-size: 1.5rem;
         font-weight: 600;
-        color: hsl(43, 96%, 56%);
+        color: hsl(var(--primary));
         margin-bottom: 1rem;
     }
     
     .journey-content {
         line-height: 1.75;
-        color: #374151;
+        color: hsl(var(--foreground));
     }
     
     /* Quote section - matches bg-primary/10 */
     .quote-section {
-        background-color: hsla(43, 96%, 56%, 0.1);
+        background-color: hsl(var(--primary) / 0.1);
         padding: 1.5rem;
         border-radius: 0.5rem;
         margin-top: 1.5rem;
@@ -195,12 +211,12 @@ st.markdown("""
     .quote-title {
         font-size: 1.5rem;
         font-weight: 600;
-        color: hsl(43, 96%, 56%);
+        color: hsl(var(--primary));
         margin-bottom: 0.5rem;
     }
     
     .quote-subtitle {
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
         margin-bottom: 1rem;
     }
     
@@ -208,25 +224,25 @@ st.markdown("""
     .share-section {
         margin-top: 1.5rem;
         padding-top: 1.5rem;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid hsl(var(--border));
     }
     
     .share-title {
         font-size: 1.125rem;
         font-weight: 500;
-        color: hsl(43, 96%, 56%);
+        color: hsl(var(--primary));
         margin-bottom: 0.5rem;
     }
     
     .share-description {
         font-size: 0.875rem;
-        color: #6b7280;
+        color: hsl(var(--muted-foreground));
         margin-bottom: 1.5rem;
     }
     
     /* Button styling to match Replit */
     .stButton > button {
-        background-color: hsl(43, 96%, 56%) !important;
+        background-color: hsl(var(--primary)) !important;
         color: white !important;
         border: none !important;
         border-radius: 0.375rem !important;
@@ -235,7 +251,7 @@ st.markdown("""
     }
     
     .stButton > button:hover {
-        background-color: hsl(43, 96%, 46%) !important;
+        background-color: hsl(var(--primary) / 0.9) !important;
         transform: translateY(-1px) !important;
     }
     
@@ -249,13 +265,13 @@ st.markdown("""
     .stNumberInput > div > div > input,
     .stTextInput > div > div > input {
         border-radius: 0.375rem !important;
-        border: 1px solid #d1d5db !important;
+        border: 1px solid hsl(var(--border)) !important;
     }
     
     .stNumberInput > div > div > input:focus,
     .stTextInput > div > div > input:focus {
-        border-color: hsl(43, 96%, 56%) !important;
-        box-shadow: 0 0 0 3px hsla(43, 96%, 56%, 0.1) !important;
+        border-color: hsl(var(--primary)) !important;
+        box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1) !important;
     }
 </style>
 """, unsafe_allow_html=True)
