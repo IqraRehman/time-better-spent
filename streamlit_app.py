@@ -546,28 +546,34 @@ def show_results_page(house_data):
     
     # Social sharing section  
     st.header("🎉 Spread the Joy! Help Friends Reclaim Their Time")
-    st.markdown("Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for amazing activities! Check out our full Replit app to explore all the possibilities. Together, let's transform cleaning hours into moments of joy.")
+    st.markdown(f"Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for {activity['title'].lower()}! Together, let's transform cleaning hours into moments of joy.")
     
-    # Social sharing buttons
+    # Share Your Discovery + $40 Off Code section
+    st.markdown("### 📤 Share Your Discovery + $40 Off Code")
+    
+    # Social sharing buttons (matching Replit design)
     col1, col2, col3, col4 = st.columns(4)
     
+    # Enhanced share text matching Replit version
+    share_text = f"✨ I just discovered something amazing! Instead of cleaning, I'm going to {activity['title'].lower()}!\n\n{activity['description'][:100]}...\n\n🎁 Want to try it too? Use code TAKE40OFF for $40 off your first cleaning!"
+    
     with col1:
-        twitter_text = f"I could save {round(monthly_hours)} hours per month by hiring Bee Friends Cleaners! Use code TAKE40OFF for $40 off!"
-        twitter_url = f"https://twitter.com/intent/tweet?text={twitter_text}"
-        st.link_button("🐦 Twitter", twitter_url, use_container_width=True)
+        twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}&hashtags=TimeBetterSpent,LifeHack,TAKE40OFF"
+        st.link_button("🕵️‍♀️ Twitter", twitter_url, use_container_width=True)
     
     with col2:
-        facebook_url = "https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com"
-        st.link_button("👥 Facebook", facebook_url, use_container_width=True)
+        facebook_url = f"https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com&quote={quote(share_text)}"
+        st.link_button("🕵️‍♂️ Facebook", facebook_url, use_container_width=True)
     
     with col3:
-        linkedin_url = "https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com"
-        st.link_button("💼 LinkedIn", linkedin_url, use_container_width=True)
+        linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com&summary={quote(share_text)}"
+        st.link_button("🔍 LinkedIn", linkedin_url, use_container_width=True)
     
     with col4:
-        whatsapp_text = f"Check this out! I could save {round(monthly_hours)} hours per month with Bee Friends Cleaners! Use code TAKE40OFF for $40 off! 🧹"
-        whatsapp_url = f"https://wa.me/?text={quote(whatsapp_text)}"
-        st.link_button("💬 WhatsApp", whatsapp_url, use_container_width=True)
+        whatsapp_url = f"https://wa.me/?text={quote(share_text)}"
+        st.link_button("📱 WhatsApp", whatsapp_url, use_container_width=True)
+    
+    st.markdown("<p style='text-align: center; color: var(--muted-foreground); font-size: 0.875rem; margin-top: 1rem;'>Share the joy of time better spent and help friends discover their perfect alternative! 🌟</p>", unsafe_allow_html=True)
     
     # Add spacing before bottom navigation
     st.markdown("---")
@@ -584,7 +590,26 @@ def show_results_page(house_data):
                 st.rerun()
         
         with c2:
-            st.link_button("🧹 Schedule Cleaning", "https://beefriendcleaners.com", use_container_width=True)
+            st.markdown("""<style>
+            .schedule-cleaning-btn {
+                background-color: #755800 !important;
+                color: white !important;
+                border: none !important;
+                padding: 0.75rem 1.5rem !important;
+                border-radius: 0.375rem !important;
+                text-decoration: none !important;
+                display: block !important;
+                text-align: center !important;
+                font-weight: 500 !important;
+                transition: all 0.2s !important;
+                width: 100% !important;
+            }
+            .schedule-cleaning-btn:hover {
+                background-color: #644a00 !important;
+                transform: translateY(-1px) !important;
+            }
+            </style>""", unsafe_allow_html=True)
+            st.markdown('<a href="https://beefriendcleaners.com" class="schedule-cleaning-btn" target="_blank">🧹 Schedule Cleaning</a>', unsafe_allow_html=True)
         
         # Debug line to confirm this section renders
         st.write("Debug: Bottom navigation section rendered")
