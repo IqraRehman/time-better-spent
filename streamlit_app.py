@@ -551,40 +551,13 @@ def show_results_page(house_data):
     # Share Your Discovery + $40 Off Code section  
     st.markdown("### 📤 Share Your Discovery + $40 Off Code")
     
-    # Create share URLs
+    # Create share URL
     share_url = "https://cleaning-passion-calculator.streamlit.app/"
-    share_text = f"✨ I just discovered something amazing! Instead of cleaning, I'm going to {activity['title'].lower()}!\n\n{activity['description'][:100]}...\n\n🎁 Want to try it too? Use code TAKE40OFF for $40 off your first cleaning!"
-    full_share_message = f"{share_text}\n\n{share_url}"
     
-    # Create sharing buttons using native Streamlit buttons
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        if st.button("📋 Copy Full Message", use_container_width=True, type="primary"):
-            st.text_area("Copy this message:", full_share_message, height=150, help="Select all and copy this text to share")
-            st.success("✅ Copy the text above to share your discovery!")
-    
-    with col2:
-        if st.button("🔗 Copy Link Only", use_container_width=True):
-            st.code(share_url, language=None)
-            st.success("✅ Copy the link above to share the calculator!")
-    
-    # Direct social media sharing buttons
-    st.markdown("**Or share directly:**")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}&hashtags=TimeBetterSpent,TAKE40OFF"
-        st.link_button("🐦 Share on Twitter", twitter_url, use_container_width=True)
-    
-    with col2:
-        facebook_url = f"https://www.facebook.com/sharer/sharer.php?u={quote(share_url)}&quote={quote(share_text)}"
-        st.link_button("📘 Share on Facebook", facebook_url, use_container_width=True)
-    
-    with col3:
-        whatsapp_url = f"https://wa.me/?text={quote(full_share_message)}"
-        st.link_button("💬 Share on WhatsApp", whatsapp_url, use_container_width=True)
+    # Single share button
+    if st.button("📤 Share Your Discovery + $40 Off Code", use_container_width=True, type="primary"):
+        st.code(share_url, language=None)
+        st.success("✅ Copy the link above to share the calculator!")
     
     # Social sharing buttons (matching Replit design)
     col1, col2, col3, col4 = st.columns(4)
