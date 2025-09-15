@@ -568,7 +568,7 @@ def show_results_page(house_data):
         height: 40px;
         border-radius: 50%;
         text-decoration: none;
-        color: white;
+        color: white !important;
         font-weight: bold;
         font-size: 18px;
         transition: all 0.2s ease;
@@ -580,7 +580,7 @@ def show_results_page(house_data):
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         text-decoration: none;
-        color: white;
+        color: white !important;
     }
     .twitter-icon {
         background: #1DA1F2;
