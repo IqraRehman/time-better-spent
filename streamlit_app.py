@@ -552,10 +552,11 @@ def show_results_page(house_data):
     # Create share URL
     share_url = "https://cleaning-passion-calculator.streamlit.app/"
     
-    # Single share button
+    # Single share button that directly shows the URL for copying
     if st.button("📤 Share Your Discovery + $40 Off Code", use_container_width=True, type="primary"):
-        st.code(share_url, language=None)
-        st.success("✅ Copy the link above to share the calculator!")
+        # Use text_input for easy selection and copying
+        st.text_input("Share this link:", value=share_url, help="Click in the box and press Ctrl+A to select all, then Ctrl+C to copy")
+        st.success("✅ Link ready to copy! Select all text above and copy it.")
     
     # Social sharing buttons (matching Replit design)
     col1, col2, col3, col4 = st.columns(4)
