@@ -683,7 +683,6 @@ def show_results_page(house_data):
         dialogs.forEach(dialog => dialog.remove());
         window.currentShareData = null;
     }}
-    }}
     </script>
     """, unsafe_allow_html=True)
     
