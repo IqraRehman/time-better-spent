@@ -623,7 +623,7 @@ def show_results_page(house_data):
         <a href="{twitter_url}" target="_blank" class="social-icon-btn twitter-icon">𝕏</a>
         <a href="{facebook_url}" target="_blank" class="social-icon-btn facebook-icon">f</a>
         <a href="{linkedin_url}" target="_blank" class="social-icon-btn linkedin-icon">in</a>
-        <a href="{whatsapp_url}" target="_blank" class="social-icon-btn whatsapp-icon">⚬</a>
+        <a href="{whatsapp_url}" target="_blank" class="social-icon-btn whatsapp-icon">💬</a>
     </div>
     """, unsafe_allow_html=True)
     
