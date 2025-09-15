@@ -568,7 +568,7 @@ def show_results_page(house_data):
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        text-decoration: none;
+        text-decoration: none !important;
         color: white !important;
         font-size: 20px;
         transition: all 0.2s ease;
@@ -578,7 +578,7 @@ def show_results_page(house_data):
     .official-social-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-        text-decoration: none;
+        text-decoration: none !important;
         color: white !important;
     }
     .twitter-official {
