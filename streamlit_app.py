@@ -549,8 +549,6 @@ def show_results_page(house_data):
     st.markdown(f"Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for {activity['title'].lower()}! Together, let's transform cleaning hours into moments of joy.")
     
     # Share Your Discovery + $40 Off Code section  
-    st.markdown("### 📤 Share Your Discovery + $40 Off Code")
-    
     # Create share URL
     share_url = "https://cleaning-passion-calculator.streamlit.app/"
     
