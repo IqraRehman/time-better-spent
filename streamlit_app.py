@@ -412,11 +412,8 @@ def show_results_page(house_data):
     /* Background color matching homepage */
     .stAppViewContainer > div:first-child {
         background-color: #efe9dc !important;
-        padding: 2rem 1rem 6rem 1rem;
+        padding: 2rem 1rem;
         min-height: 100vh;
-        height: auto !important;
-        max-height: none !important;
-        overflow: visible !important;
     }
     
     /* Box size layout - constrain width and center content */
@@ -434,41 +431,16 @@ def show_results_page(house_data):
         border-radius: 0.75rem;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         border: 2px solid #d4c4a8;
-        padding: 2rem 2rem 6rem 2rem !important;
+        padding: 2rem 2rem 4rem 2rem !important;
         margin-top: 2rem;
-        margin-bottom: 6rem;
+        margin-bottom: 2rem;
         min-height: auto;
-        height: auto !important;
-        max-height: none !important;
-        overflow: visible !important;
     }
     
-    /* Ensure full content visibility */
-    .stApp {
-        height: auto !important;
-        min-height: 100vh !important;
-        max-height: none !important;
-        overflow: visible !important;
-    }
-    
-    /* Ensure main container can expand */
+    /* Restore proper Streamlit scrolling */
     .main {
-        height: auto !important;
-        max-height: none !important;
-        overflow: visible !important;
-        padding-bottom: 6rem !important;
-    }
-    
-    /* Force Streamlit containers to expand */
-    .element-container {
-        max-height: none !important;
-        overflow: visible !important;
-    }
-    
-    /* Remove any height restrictions */
-    div[data-testid="stVerticalBlock"] {
-        max-height: none !important;
-        overflow: visible !important;
+        overflow-y: auto !important;
+        padding-bottom: 4rem !important;
     }
     
     body {
@@ -603,6 +575,9 @@ def show_results_page(house_data):
         # Use text_input for easy selection and copying
         st.text_input("Share this link:", value=share_url, help="Click in the box and press Ctrl+A to select all, then Ctrl+C to copy")
         st.success("✅ Link ready to copy! Select all text above and copy it.")
+    
+    # Add spacer to guarantee scroll reach
+    st.markdown("<div style='height: 120px'></div>", unsafe_allow_html=True)
     
 
 # Main app logic
