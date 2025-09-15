@@ -559,19 +559,19 @@ def show_results_page(house_data):
     
     with col1:
         twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}&hashtags=TimeBetterSpent,LifeHack,TAKE40OFF"
-        st.link_button("🕵️‍♀️ Twitter", twitter_url, use_container_width=True)
+        st.link_button("🐦", twitter_url, use_container_width=True)
     
     with col2:
         facebook_url = f"https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com&quote={quote(share_text)}"
-        st.link_button("🕵️‍♂️ Facebook", facebook_url, use_container_width=True)
+        st.link_button("📘", facebook_url, use_container_width=True)
     
     with col3:
         linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com&summary={quote(share_text)}"
-        st.link_button("🔍 LinkedIn", linkedin_url, use_container_width=True)
+        st.link_button("💼", linkedin_url, use_container_width=True)
     
     with col4:
         whatsapp_url = f"https://wa.me/?text={quote(share_text)}"
-        st.link_button("📱 WhatsApp", whatsapp_url, use_container_width=True)
+        st.link_button("💬", whatsapp_url, use_container_width=True)
     
     st.markdown("<p style='text-align: center; color: var(--muted-foreground); font-size: 0.875rem; margin-top: 1rem; margin-bottom: 1rem;'>Share the joy of time better spent and help friends discover their perfect alternative! 🌟</p>", unsafe_allow_html=True)
     
@@ -582,6 +582,33 @@ def show_results_page(house_data):
     with st.container():
         c1, c2 = st.columns(2)
         
+        # Add consistent button styling
+        st.markdown("""<style>
+        .stButton > button {
+            height: 3rem !important;
+            font-weight: 500 !important;
+        }
+        .schedule-cleaning-btn {
+            background-color: #755800 !important;
+            color: white !important;
+            border: none !important;
+            padding: 0.75rem 1.5rem !important;
+            border-radius: 0.375rem !important;
+            text-decoration: none !important;
+            display: block !important;
+            text-align: center !important;
+            font-weight: 500 !important;
+            transition: all 0.2s !important;
+            width: 100% !important;
+            height: 3rem !important;
+            line-height: 1.5rem !important;
+        }
+        .schedule-cleaning-btn:hover {
+            background-color: #644a00 !important;
+            transform: translateY(-1px) !important;
+        }
+        </style>""", unsafe_allow_html=True)
+        
         with c1:
             if st.button("🔄 Calculate Again", use_container_width=True, key="calc_again"):
                 st.session_state.show_results = False
@@ -589,25 +616,6 @@ def show_results_page(house_data):
                 st.rerun()
         
         with c2:
-            st.markdown("""<style>
-            .schedule-cleaning-btn {
-                background-color: #755800 !important;
-                color: white !important;
-                border: none !important;
-                padding: 0.75rem 1.5rem !important;
-                border-radius: 0.375rem !important;
-                text-decoration: none !important;
-                display: block !important;
-                text-align: center !important;
-                font-weight: 500 !important;
-                transition: all 0.2s !important;
-                width: 100% !important;
-            }
-            .schedule-cleaning-btn:hover {
-                background-color: #644a00 !important;
-                transform: translateY(-1px) !important;
-            }
-            </style>""", unsafe_allow_html=True)
             st.markdown('<a href="https://beefriendcleaners.com" class="schedule-cleaning-btn" target="_blank">🧹 Schedule Cleaning</a>', unsafe_allow_html=True)
         
         # Debug line to confirm this section renders
