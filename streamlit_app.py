@@ -290,7 +290,7 @@ def show_home_page():
         <style>
             body {{ font-family: 'Inter', sans-serif; }}
             .gradient-text {{
-                background: linear-gradient(to right, hsl(43, 96%, 56%), hsl(43, 96%, 56%, 0.6));
+                background: linear-gradient(to right, #755800, rgba(117, 88, 0, 0.6));
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
@@ -395,7 +395,7 @@ def show_results_page(house_data):
     
     /* Custom colors matching Replit app */
     :root {
-        --primary: hsl(43, 96%, 56%);
+        --primary: #755800;
         --background: hsl(0, 0%, 100%);
         --foreground: hsl(222.2, 84%, 4.9%);
         --muted-foreground: hsl(215.4, 16.3%, 46.9%);
@@ -453,7 +453,7 @@ def show_results_page(house_data):
     # Time investment box
     with st.container():
         st.markdown(f"""
-        <div style="background-color: hsl(43, 96%, 90%); padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
+        <div style="background-color: rgba(117, 88, 0, 0.1); padding: 1.5rem; border-radius: 0.5rem; margin: 1.5rem 0;">
             <p style="font-size: 1.125rem; font-weight: 500; color: var(--primary); margin-bottom: 0.5rem;">
                 Time Investment:
             </p>
