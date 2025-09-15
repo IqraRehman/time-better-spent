@@ -13,7 +13,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Hide Streamlit elements
+# Hide Streamlit elements and set background color
 st.markdown("""
 <style>
     #MainMenu {visibility: hidden;}
@@ -24,6 +24,12 @@ st.markdown("""
     }
     .main > div {
         padding: 0 !important;
+    }
+    .stApp {
+        background-color: #EFE9DB;
+    }
+    .main .block-container {
+        background-color: #EFE9DB;
     }
 </style>
 """, unsafe_allow_html=True)
