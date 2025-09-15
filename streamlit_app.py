@@ -557,10 +557,11 @@ def show_results_page(house_data):
     # Enhanced share text matching Replit version
     share_text = f"✨ I just discovered something amazing! Instead of cleaning, I'm going to {activity['title'].lower()}!\n\n{activity['description'][:100]}...\n\n🎁 Want to try it too? Use code TAKE40OFF for $40 off your first cleaning!"
     
-    # Add proper social media brand icon styling
+    # Add Font Awesome for official social media icons
     st.markdown("""
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-    .social-brand-btn {
+    .official-social-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -569,39 +570,30 @@ def show_results_page(house_data):
         border-radius: 50%;
         text-decoration: none;
         color: white !important;
-        font-weight: bold;
+        font-size: 20px;
         transition: all 0.2s ease;
-        border: none;
-        cursor: pointer;
         margin: 0 6px;
-        position: relative;
+        cursor: pointer;
     }
-    .social-brand-btn:hover {
+    .official-social-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         text-decoration: none;
         color: white !important;
     }
-    .twitter-brand {
+    .twitter-official {
         background: #1DA1F2;
-        font-size: 20px;
     }
-    .facebook-brand {
+    .facebook-official {
         background: #1877F2;
-        font-size: 24px;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
     }
-    .linkedin-brand {
+    .linkedin-official {
         background: #0A66C2;
-        font-size: 18px;
-        font-family: 'Arial Black', Arial, sans-serif;
-        font-weight: 900;
     }
-    .whatsapp-brand {
+    .whatsapp-official {
         background: #25D366;
-        font-size: 22px;
     }
-    .social-brand-container {
+    .official-social-container {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -611,18 +603,26 @@ def show_results_page(house_data):
     </style>
     """, unsafe_allow_html=True)
     
-    # Create professional social media brand icons
+    # Create official social media icons using Font Awesome
     twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}&hashtags=TimeBetterSpent,LifeHack,TAKE40OFF"
     facebook_url = f"https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com&quote={quote(share_text)}"
     linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com&summary={quote(share_text)}"
     whatsapp_url = f"https://wa.me/?text={quote(share_text)}"
     
     st.markdown(f"""
-    <div class="social-brand-container">
-        <a href="{twitter_url}" target="_blank" class="social-brand-btn twitter-brand">🐦</a>
-        <a href="{facebook_url}" target="_blank" class="social-brand-btn facebook-brand">f</a>
-        <a href="{linkedin_url}" target="_blank" class="social-brand-btn linkedin-brand">in</a>
-        <a href="{whatsapp_url}" target="_blank" class="social-brand-btn whatsapp-brand">📞</a>
+    <div class="official-social-container">
+        <a href="{twitter_url}" target="_blank" class="official-social-btn twitter-official">
+            <i class="fab fa-twitter"></i>
+        </a>
+        <a href="{facebook_url}" target="_blank" class="official-social-btn facebook-official">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="{linkedin_url}" target="_blank" class="official-social-btn linkedin-official">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="{whatsapp_url}" target="_blank" class="official-social-btn whatsapp-official">
+            <i class="fab fa-whatsapp"></i>
+        </a>
     </div>
     """, unsafe_allow_html=True)
     
