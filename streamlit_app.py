@@ -557,21 +557,60 @@ def show_results_page(house_data):
     # Enhanced share text matching Replit version
     share_text = f"✨ I just discovered something amazing! Instead of cleaning, I'm going to {activity['title'].lower()}!\n\n{activity['description'][:100]}...\n\n🎁 Want to try it too? Use code TAKE40OFF for $40 off your first cleaning!"
     
+    # Add social media icon styling
+    st.markdown("""
+    <style>
+    .social-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 44px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+    }
+    .social-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        text-decoration: none;
+        color: white;
+    }
+    .twitter-btn {
+        background: linear-gradient(45deg, #1DA1F2, #0d8bd9);
+    }
+    .facebook-btn {
+        background: linear-gradient(45deg, #1877F2, #0d65d9);
+    }
+    .linkedin-btn {
+        background: linear-gradient(45deg, #0A66C2, #084c94);
+    }
+    .whatsapp-btn {
+        background: linear-gradient(45deg, #25D366, #1ebe57);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
     with col1:
         twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}&hashtags=TimeBetterSpent,LifeHack,TAKE40OFF"
-        st.link_button("🐦", twitter_url, use_container_width=True)
+        st.markdown(f'<a href="{twitter_url}" target="_blank" class="social-btn twitter-btn">𝕏 Twitter</a>', unsafe_allow_html=True)
     
     with col2:
         facebook_url = f"https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com&quote={quote(share_text)}"
-        st.link_button("📘", facebook_url, use_container_width=True)
+        st.markdown(f'<a href="{facebook_url}" target="_blank" class="social-btn facebook-btn">f Facebook</a>', unsafe_allow_html=True)
     
     with col3:
         linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com&summary={quote(share_text)}"
-        st.link_button("💼", linkedin_url, use_container_width=True)
+        st.markdown(f'<a href="{linkedin_url}" target="_blank" class="social-btn linkedin-btn">in LinkedIn</a>', unsafe_allow_html=True)
     
     with col4:
         whatsapp_url = f"https://wa.me/?text={quote(share_text)}"
-        st.link_button("💬", whatsapp_url, use_container_width=True)
+        st.markdown(f'<a href="{whatsapp_url}" target="_blank" class="social-btn whatsapp-btn">📱 WhatsApp</a>', unsafe_allow_html=True)
     
     st.markdown("<p style='text-align: center; color: var(--muted-foreground); font-size: 0.875rem; margin-top: 1rem; margin-bottom: 1rem;'>Share the joy of time better spent and help friends discover their perfect alternative! 🌟</p>", unsafe_allow_html=True)
     
