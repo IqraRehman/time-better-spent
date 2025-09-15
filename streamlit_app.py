@@ -548,143 +548,43 @@ def show_results_page(house_data):
     st.header("🎉 Spread the Joy! Help Friends Reclaim Their Time")
     st.markdown(f"Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for {activity['title'].lower()}! Together, let's transform cleaning hours into moments of joy.")
     
-    # Share Your Discovery + $40 Off Code section
-    st.markdown("""
-    <style>
-    .share-discovery-btn {
-        background: linear-gradient(135deg, #755800, #8b6b00);
-        color: white !important;
-        padding: 12px 24px;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none !important;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin: 20px 0;
-        width: 100%;
-        justify-content: center;
-        min-height: 48px;
-    }
-    .share-discovery-btn:hover {
-        background: linear-gradient(135deg, #8b6b00, #9d7800);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(117, 88, 0, 0.3);
-        color: white !important;
-        text-decoration: none !important;
-    }
-    .share-discovery-btn:active {
-        transform: translateY(0);
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # Share Your Discovery + $40 Off Code section  
+    st.markdown("### 📤 Share Your Discovery + $40 Off Code")
     
-    # Create share button with native Web Share API
+    # Create share URLs
     share_url = "https://cleaning-passion-calculator.streamlit.app/"
-    share_title = "Time Better Spent Calculator"
+    share_text = f"✨ I just discovered something amazing! Instead of cleaning, I'm going to {activity['title'].lower()}!\n\n{activity['description'][:100]}...\n\n🎁 Want to try it too? Use code TAKE40OFF for $40 off your first cleaning!"
+    full_share_message = f"{share_text}\n\n{share_url}"
     
-    st.markdown(f"""
-    <button class="share-discovery-btn" onclick="shareDiscovery()">
-        📤 Share Your Discovery + $40 Off Code
-    </button>
+    # Create sharing buttons using native Streamlit buttons
+    col1, col2 = st.columns(2)
     
-    <script>
-    async function shareDiscovery() {{
-        const shareData = {{
-            title: '{share_title}',
-            text: `✨ I just discovered something amazing! Instead of cleaning, I'm going to {activity['title'].lower()}!\\n\\n{activity['description'][:100]}...\\n\\n🎁 Want to try it too? Use code TAKE40OFF for $40 off your first cleaning!`,
-            url: '{share_url}'
-        }};
-        
-        try {{
-            if (navigator.share) {{
-                // Use native Web Share API if available
-                await navigator.share(shareData);
-            }} else {{
-                // Show share options dialog with copy link functionality
-                showShareDialog(shareData);
-            }}
-        }} catch (err) {{
-            // Show share options dialog
-            showShareDialog(shareData);
-        }}
-    }}
+    with col1:
+        if st.button("📋 Copy Full Message", use_container_width=True, type="primary"):
+            st.text_area("Copy this message:", full_share_message, height=150, help="Select all and copy this text to share")
+            st.success("✅ Copy the text above to share your discovery!")
     
-    function showShareDialog(shareData) {{
-        const shareText = encodeURIComponent(shareData.text);
-        const shareDialog = `
-            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                       background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-                       z-index: 10000; max-width: 450px; text-align: center;">
-                <h3 style="margin-top: 0; color: #333;">📤 Share Your Discovery</h3>
-                <p style="color: #666; margin: 16px 0;">Choose how you'd like to share:</p>
-                
-                <!-- Copy options -->
-                <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 16px;">
-                    <button onclick="copyFullText()" style="background: #755800; color: white; padding: 8px 16px; 
-                           border-radius: 6px; border: none; cursor: pointer; font-size: 14px;">📋 Copy Full Message</button>
-                    <button onclick="copyLinkOnly()" style="background: #666; color: white; padding: 8px 16px; 
-                           border-radius: 6px; border: none; cursor: pointer; font-size: 14px;">🔗 Copy Link Only</button>
-                </div>
-                
-                <!-- Social media options -->
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <a href="https://twitter.com/intent/tweet?text=${{shareText}}&hashtags=TimeBetterSpent,TAKE40OFF" 
-                       target="_blank" style="background: #1DA1F2; color: white; padding: 8px 16px; 
-                       border-radius: 6px; text-decoration: none; font-size: 14px;">🐦 Twitter</a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={share_url}&quote=${{shareText}}" 
-                       target="_blank" style="background: #1877F2; color: white; padding: 8px 16px; 
-                       border-radius: 6px; text-decoration: none; font-size: 14px;">📘 Facebook</a>
-                    <a href="https://wa.me/?text=${{shareText}}" 
-                       target="_blank" style="background: #25D366; color: white; padding: 8px 16px; 
-                       border-radius: 6px; text-decoration: none; font-size: 14px;">💬 WhatsApp</a>
-                </div>
-                
-                <button onclick="closeShareDialog()" 
-                        style="margin-top: 16px; background: #ddd; border: none; padding: 8px 16px; 
-                        border-radius: 6px; cursor: pointer;">Close</button>
-            </div>
-            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-                       background: rgba(0,0,0,0.5); z-index: 9999;" onclick="closeShareDialog();"></div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', shareDialog);
-        
-        // Store share data for copy functions
-        window.currentShareData = shareData;
-    }}
+    with col2:
+        if st.button("🔗 Copy Link Only", use_container_width=True):
+            st.code(share_url, language=None)
+            st.success("✅ Copy the link above to share the calculator!")
     
-    async function copyFullText() {{
-        try {{
-            const textToCopy = window.currentShareData.text + '\\n\\n' + window.currentShareData.url;
-            await navigator.clipboard.writeText(textToCopy);
-            alert('✅ Full message copied to clipboard! Paste it anywhere to share your discovery.');
-            closeShareDialog();
-        }} catch (err) {{
-            alert('❌ Unable to copy to clipboard. Please try selecting and copying the text manually.');
-        }}
-    }}
+    # Direct social media sharing buttons
+    st.markdown("**Or share directly:**")
     
-    async function copyLinkOnly() {{
-        try {{
-            await navigator.clipboard.writeText(window.currentShareData.url);
-            alert('🔗 Link copied to clipboard! Share this URL with friends to try the calculator.');
-            closeShareDialog();
-        }} catch (err) {{
-            alert('❌ Unable to copy to clipboard. Please try selecting and copying the link manually.');
-        }}
-    }}
+    col1, col2, col3 = st.columns(3)
     
-    function closeShareDialog() {{
-        const dialogs = document.querySelectorAll('[style*="z-index: 10000"], [style*="z-index: 9999"]');
-        dialogs.forEach(dialog => dialog.remove());
-        window.currentShareData = null;
-    }}
-    </script>
-    """, unsafe_allow_html=True)
+    with col1:
+        twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}&hashtags=TimeBetterSpent,TAKE40OFF"
+        st.link_button("🐦 Share on Twitter", twitter_url, use_container_width=True)
+    
+    with col2:
+        facebook_url = f"https://www.facebook.com/sharer/sharer.php?u={quote(share_url)}&quote={quote(share_text)}"
+        st.link_button("📘 Share on Facebook", facebook_url, use_container_width=True)
+    
+    with col3:
+        whatsapp_url = f"https://wa.me/?text={quote(full_share_message)}"
+        st.link_button("💬 Share on WhatsApp", whatsapp_url, use_container_width=True)
     
     # Social sharing buttons (matching Replit design)
     col1, col2, col3, col4 = st.columns(4)
