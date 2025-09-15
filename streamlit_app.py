@@ -605,42 +605,84 @@ def show_results_page(house_data):
                 // Use native Web Share API if available
                 await navigator.share(shareData);
             }} else {{
-                // Fallback: copy to clipboard
-                const textToCopy = shareData.text + '\\n\\n' + shareData.url;
-                await navigator.clipboard.writeText(textToCopy);
-                
-                // Show success message
-                alert('✅ Share text copied to clipboard! Paste it anywhere to share your discovery.');
+                // Show share options dialog with copy link functionality
+                showShareDialog(shareData);
             }}
         }} catch (err) {{
-            // Final fallback: show share dialog
-            const shareText = encodeURIComponent(shareData.text);
-            const shareDialog = `
-                <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-                           background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-                           z-index: 10000; max-width: 400px; text-align: center;">
-                    <h3 style="margin-top: 0; color: #333;">Share Your Discovery</h3>
-                    <p style="color: #666; margin: 16px 0;">Choose how you'd like to share:</p>
-                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                        <a href="https://twitter.com/intent/tweet?text=${{shareText}}&hashtags=TimeBetterSpent,TAKE40OFF" 
-                           target="_blank" style="background: #1DA1F2; color: white; padding: 8px 16px; 
-                           border-radius: 6px; text-decoration: none; font-size: 14px;">Twitter</a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={share_url}&quote=${{shareText}}" 
-                           target="_blank" style="background: #1877F2; color: white; padding: 8px 16px; 
-                           border-radius: 6px; text-decoration: none; font-size: 14px;">Facebook</a>
-                        <a href="https://wa.me/?text=${{shareText}}" 
-                           target="_blank" style="background: #25D366; color: white; padding: 8px 16px; 
-                           border-radius: 6px; text-decoration: none; font-size: 14px;">WhatsApp</a>
-                    </div>
-                    <button onclick="this.parentElement.remove()" 
-                            style="margin-top: 16px; background: #ddd; border: none; padding: 8px 16px; 
-                            border-radius: 6px; cursor: pointer;">Close</button>
-                </div>
-                <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-                           background: rgba(0,0,0,0.5); z-index: 9999;" onclick="this.nextElementSibling.remove(); this.remove();"></div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', shareDialog);
+            // Show share options dialog
+            showShareDialog(shareData);
         }}
+    }}
+    
+    function showShareDialog(shareData) {{
+        const shareText = encodeURIComponent(shareData.text);
+        const shareDialog = `
+            <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                       background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+                       z-index: 10000; max-width: 450px; text-align: center;">
+                <h3 style="margin-top: 0; color: #333;">📤 Share Your Discovery</h3>
+                <p style="color: #666; margin: 16px 0;">Choose how you'd like to share:</p>
+                
+                <!-- Copy options -->
+                <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 16px;">
+                    <button onclick="copyFullText()" style="background: #755800; color: white; padding: 8px 16px; 
+                           border-radius: 6px; border: none; cursor: pointer; font-size: 14px;">📋 Copy Full Message</button>
+                    <button onclick="copyLinkOnly()" style="background: #666; color: white; padding: 8px 16px; 
+                           border-radius: 6px; border: none; cursor: pointer; font-size: 14px;">🔗 Copy Link Only</button>
+                </div>
+                
+                <!-- Social media options -->
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://twitter.com/intent/tweet?text=${{shareText}}&hashtags=TimeBetterSpent,TAKE40OFF" 
+                       target="_blank" style="background: #1DA1F2; color: white; padding: 8px 16px; 
+                       border-radius: 6px; text-decoration: none; font-size: 14px;">🐦 Twitter</a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={share_url}&quote=${{shareText}}" 
+                       target="_blank" style="background: #1877F2; color: white; padding: 8px 16px; 
+                       border-radius: 6px; text-decoration: none; font-size: 14px;">📘 Facebook</a>
+                    <a href="https://wa.me/?text=${{shareText}}" 
+                       target="_blank" style="background: #25D366; color: white; padding: 8px 16px; 
+                       border-radius: 6px; text-decoration: none; font-size: 14px;">💬 WhatsApp</a>
+                </div>
+                
+                <button onclick="closeShareDialog()" 
+                        style="margin-top: 16px; background: #ddd; border: none; padding: 8px 16px; 
+                        border-radius: 6px; cursor: pointer;">Close</button>
+            </div>
+            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                       background: rgba(0,0,0,0.5); z-index: 9999;" onclick="closeShareDialog();"></div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', shareDialog);
+        
+        // Store share data for copy functions
+        window.currentShareData = shareData;
+    }}
+    
+    async function copyFullText() {{
+        try {{
+            const textToCopy = window.currentShareData.text + '\\n\\n' + window.currentShareData.url;
+            await navigator.clipboard.writeText(textToCopy);
+            alert('✅ Full message copied to clipboard! Paste it anywhere to share your discovery.');
+            closeShareDialog();
+        }} catch (err) {{
+            alert('❌ Unable to copy to clipboard. Please try selecting and copying the text manually.');
+        }}
+    }}
+    
+    async function copyLinkOnly() {{
+        try {{
+            await navigator.clipboard.writeText(window.currentShareData.url);
+            alert('🔗 Link copied to clipboard! Share this URL with friends to try the calculator.');
+            closeShareDialog();
+        }} catch (err) {{
+            alert('❌ Unable to copy to clipboard. Please try selecting and copying the link manually.');
+        }}
+    }}
+    
+    function closeShareDialog() {{
+        const dialogs = document.querySelectorAll('[style*="z-index: 10000"], [style*="z-index: 9999"]');
+        dialogs.forEach(dialog => dialog.remove());
+        window.currentShareData = null;
+    }}
     }}
     </script>
     """, unsafe_allow_html=True)
