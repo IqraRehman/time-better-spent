@@ -549,20 +549,25 @@ def show_results_page(house_data):
     st.markdown("Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for amazing activities! Check out our full Replit app to explore all the possibilities. Together, let's transform cleaning hours into moments of joy.")
     
     # Social sharing buttons
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         twitter_text = f"I could save {round(monthly_hours)} hours per month by hiring Bee Friends Cleaners! Use code TAKE40OFF for $40 off!"
         twitter_url = f"https://twitter.com/intent/tweet?text={twitter_text}"
-        st.link_button("📱 Twitter", twitter_url, use_container_width=True)
+        st.link_button("🐦 Twitter", twitter_url, use_container_width=True)
     
     with col2:
         facebook_url = "https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com"
-        st.link_button("📘 Facebook", facebook_url, use_container_width=True)
+        st.link_button("👥 Facebook", facebook_url, use_container_width=True)
     
     with col3:
         linkedin_url = "https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com"
         st.link_button("💼 LinkedIn", linkedin_url, use_container_width=True)
+    
+    with col4:
+        whatsapp_text = f"Check this out! I could save {round(monthly_hours)} hours per month with Bee Friends Cleaners! Use code TAKE40OFF for $40 off! 🧹"
+        whatsapp_url = f"https://wa.me/?text={quote(whatsapp_text)}"
+        st.link_button("💬 WhatsApp", whatsapp_url, use_container_width=True)
     
     # Add spacing before bottom navigation
     st.markdown("---")
