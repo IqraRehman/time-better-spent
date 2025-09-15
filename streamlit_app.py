@@ -303,7 +303,7 @@ def show_home_page():
             }}
         </style>
     </head>
-    <body class="bg-gradient-to-b from-primary/10 to-primary/10 flex items-center justify-center" style="min-height: 100vh;">
+    <body class="flex items-center justify-center" style="min-height: 100vh; background-color: #efe9dc;">
         <div class="max-w-2xl mx-auto px-4">
             <div class="text-center mb-8">
                 <h1 class="text-4xl font-bold gradient-text mb-4">
