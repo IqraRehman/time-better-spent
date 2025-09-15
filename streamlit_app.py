@@ -303,7 +303,7 @@ def show_home_page():
             }}
         </style>
     </head>
-    <body class="bg-gradient-to-b from-primary/10 to-background p-4">
+    <body class="bg-gradient-to-b from-primary/10 to-background">
         <div class="max-w-2xl mx-auto">
             <div class="text-center mb-8 pt-8">
                 <h1 class="text-4xl font-bold gradient-text mb-4">
