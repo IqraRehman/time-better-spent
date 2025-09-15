@@ -276,7 +276,7 @@ def show_home_page():
                 theme: {{
                     extend: {{
                         colors: {{
-                            primary: 'hsl(43, 96%, 56%)',
+                            primary: '#755800',
                             background: 'hsl(0, 0%, 100%)',
                             foreground: 'hsl(222.2, 84%, 4.9%)',
                             'muted-foreground': 'hsl(215.4, 16.3%, 46.9%)',
