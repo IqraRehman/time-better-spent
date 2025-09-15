@@ -557,73 +557,72 @@ def show_results_page(house_data):
     # Enhanced share text matching Replit version
     share_text = f"✨ I just discovered something amazing! Instead of cleaning, I'm going to {activity['title'].lower()}!\n\n{activity['description'][:100]}...\n\n🎁 Want to try it too? Use code TAKE40OFF for $40 off your first cleaning!"
     
-    # Add proper social media icon styling
+    # Add proper social media brand icon styling
     st.markdown("""
     <style>
-    .social-icon-btn {
+    .social-brand-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         text-decoration: none;
         color: white !important;
         font-weight: bold;
-        font-size: 18px;
         transition: all 0.2s ease;
         border: none;
         cursor: pointer;
-        margin: 0 5px;
+        margin: 0 6px;
+        position: relative;
     }
-    .social-icon-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    .social-brand-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         text-decoration: none;
         color: white !important;
     }
-    .twitter-icon {
+    .twitter-brand {
         background: #1DA1F2;
-        font-family: 'Twitter Color Emoji', 'Segoe UI Emoji', sans-serif;
-    }
-    .facebook-icon {
-        background: #1877F2;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        font-weight: bold;
-    }
-    .linkedin-icon {
-        background: #0A66C2;
-        font-family: 'Arial', sans-serif;
-        font-size: 14px;
-        font-weight: bold;
-    }
-    .whatsapp-icon {
-        background: #25D366;
-        font-family: 'Segoe UI Emoji', sans-serif;
         font-size: 20px;
     }
-    .social-icons-container {
+    .facebook-brand {
+        background: #1877F2;
+        font-size: 24px;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    .linkedin-brand {
+        background: #0A66C2;
+        font-size: 18px;
+        font-family: 'Arial Black', Arial, sans-serif;
+        font-weight: 900;
+    }
+    .whatsapp-brand {
+        background: #25D366;
+        font-size: 22px;
+    }
+    .social-brand-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         margin: 20px 0;
     }
     </style>
     """, unsafe_allow_html=True)
     
-    # Create centered social media icons
+    # Create professional social media brand icons
     twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}&hashtags=TimeBetterSpent,LifeHack,TAKE40OFF"
     facebook_url = f"https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com&quote={quote(share_text)}"
     linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com&summary={quote(share_text)}"
     whatsapp_url = f"https://wa.me/?text={quote(share_text)}"
     
     st.markdown(f"""
-    <div class="social-icons-container">
-        <a href="{twitter_url}" target="_blank" class="social-icon-btn twitter-icon">𝕏</a>
-        <a href="{facebook_url}" target="_blank" class="social-icon-btn facebook-icon">f</a>
-        <a href="{linkedin_url}" target="_blank" class="social-icon-btn linkedin-icon">in</a>
-        <a href="{whatsapp_url}" target="_blank" class="social-icon-btn whatsapp-icon">💬</a>
+    <div class="social-brand-container">
+        <a href="{twitter_url}" target="_blank" class="social-brand-btn twitter-brand">🐦</a>
+        <a href="{facebook_url}" target="_blank" class="social-brand-btn facebook-brand">f</a>
+        <a href="{linkedin_url}" target="_blank" class="social-brand-btn linkedin-brand">in</a>
+        <a href="{whatsapp_url}" target="_blank" class="social-brand-btn whatsapp-brand">📞</a>
     </div>
     """, unsafe_allow_html=True)
     
