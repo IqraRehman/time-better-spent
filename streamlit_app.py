@@ -570,11 +570,61 @@ def show_results_page(house_data):
     # Create share URL
     share_url = "https://cleaning-passion-calculator.streamlit.app/"
     
-    # Single share button that directly shows the URL for copying
+    # Share message
+    share_text = f"✨ I just discovered something amazing! Instead of cleaning, I'm going to {activity['title'].lower()}!\\n\\n{activity['description']}\\n\\n🎁 Want to try it too? Use code TAKE40OFF for $40 off your first cleaning and find your perfect activity at:"
+    
+    # Main share button that shows the URL for copying
     if st.button("📤 Share Your Discovery + $40 Off Code", use_container_width=True, type="primary"):
         # Use text_input for easy selection and copying
         st.text_input("Share this link:", value=share_url, help="Click in the box and press Ctrl+A to select all, then Ctrl+C to copy")
         st.success("✅ Link ready to copy! Select all text above and copy it.")
+    
+    # Social Media Icons Section
+    st.markdown("**Share on Social Media:**")
+    
+    # Create social media share links
+    twitter_url = f"https://twitter.com/intent/tweet?text={share_text.replace(' ', '%20')}&url={share_url}&hashtags=TimeBetterSpent,LifeHack,TAKE40OFF"
+    facebook_url = f"https://www.facebook.com/sharer/sharer.php?u={share_url}&quote={share_text.replace(' ', '%20')}"
+    linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={share_url}"
+    whatsapp_url = f"https://wa.me/?text={share_text.replace(' ', '%20')}%20{share_url}"
+    
+    # Social media buttons with icons in columns
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown(f'<a href="{twitter_url}" target="_blank"><button style="background-color: #1DA1F2; color: white; border: none; padding: 12px; border-radius: 50%; width: 48px; height: 48px; cursor: pointer; font-size: 16px;">🐦</button></a>', unsafe_allow_html=True)
+        st.markdown('<p style="text-align: center; font-size: 12px; margin-top: 4px;">Twitter</p>', unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f'<a href="{facebook_url}" target="_blank"><button style="background-color: #4267B2; color: white; border: none; padding: 12px; border-radius: 50%; width: 48px; height: 48px; cursor: pointer; font-size: 16px;">📘</button></a>', unsafe_allow_html=True)
+        st.markdown('<p style="text-align: center; font-size: 12px; margin-top: 4px;">Facebook</p>', unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown(f'<a href="{linkedin_url}" target="_blank"><button style="background-color: #0077B5; color: white; border: none; padding: 12px; border-radius: 50%; width: 48px; height: 48px; cursor: pointer; font-size: 16px;">💼</button></a>', unsafe_allow_html=True)
+        st.markdown('<p style="text-align: center; font-size: 12px; margin-top: 4px;">LinkedIn</p>', unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown(f'<a href="{whatsapp_url}" target="_blank"><button style="background-color: #25D366; color: white; border: none; padding: 12px; border-radius: 50%; width: 48px; height: 48px; cursor: pointer; font-size: 16px;">💬</button></a>', unsafe_allow_html=True)
+        st.markdown('<p style="text-align: center; font-size: 12px; margin-top: 4px;">WhatsApp</p>', unsafe_allow_html=True)
+    
+    st.markdown('<p style="text-align: center; font-size: 14px; color: #666; margin-top: 16px;">Share the joy of time better spent and help friends discover their perfect alternative! 🌟</p>', unsafe_allow_html=True)
+    
+    # Bottom action buttons section
+    st.markdown("---")
+    
+    # Two-column layout for bottom buttons
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("🔄 Calculate Again", use_container_width=True, type="secondary"):
+            # Clear session state and restart
+            st.session_state.show_results = False
+            st.session_state.house_data = None
+            st.rerun()
+    
+    with col2:
+        if st.button("📅 Schedule Cleaning", use_container_width=True, type="primary"):
+            st.success("🎉 Thank you for your interest! We'll contact you soon to schedule your cleaning service.")
     
     # Add spacer to guarantee scroll reach
     st.markdown("<div style='height: 120px'></div>", unsafe_allow_html=True)
