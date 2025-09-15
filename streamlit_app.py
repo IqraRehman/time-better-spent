@@ -315,24 +315,24 @@ def show_home_page():
             </div>
 
             <div class="max-w-xl mx-auto">
-                <div class="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
+                <div class="rounded-lg shadow-sm overflow-hidden" style="background-color: #FCF9F3; border: 2px solid #d4c4a8;">
                     <div class="p-6">
                         <form id="houseForm">
                             <div class="space-y-4 mb-6">
                                 <div>
                                     <label class="block text-sm font-medium text-foreground mb-2">Square Feet</label>
                                     <input type="number" id="squareFeet" name="squareFeet" min="500" max="10000" value="2300" step="100"
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                           class="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" style="border: 1px solid #d4c4a8; background-color: #ffffff;">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-foreground mb-2">Number of Bedrooms</label>
                                     <input type="number" id="bedrooms" name="bedrooms" min="1" max="5" value="3" step="1"
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                           class="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" style="border: 1px solid #d4c4a8; background-color: #ffffff;">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-foreground mb-2">Number of Bathrooms</label>
                                     <input type="number" id="bathrooms" name="bathrooms" min="1" max="6" value="2" step="1"
-                                           class="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                           class="w-full px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary" style="border: 1px solid #d4c4a8; background-color: #ffffff;">
                                 </div>
                             </div>
                             <button type="submit" id="calculateBtn"
