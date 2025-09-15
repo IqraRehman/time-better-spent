@@ -640,52 +640,6 @@ def show_results_page(house_data):
     """, unsafe_allow_html=True)
     
     st.markdown("<p style='text-align: center; color: var(--muted-foreground); font-size: 0.875rem; margin-top: 1rem; margin-bottom: 1rem;'>Share the joy of time better spent and help friends discover their perfect alternative! 🌟</p>", unsafe_allow_html=True)
-    
-    # Reduced spacing before bottom navigation
-    st.markdown("### Ready for the Next Step?")
-    
-    # Bottom navigation buttons - wrapped in container with unique keys
-    with st.container():
-        c1, c2 = st.columns(2)
-        
-        # Add consistent button styling
-        st.markdown("""<style>
-        .stButton > button {
-            height: 3rem !important;
-            font-weight: 500 !important;
-        }
-        .schedule-cleaning-btn {
-            background-color: #755800 !important;
-            color: white !important;
-            border: none !important;
-            padding: 0.75rem 1.5rem !important;
-            border-radius: 0.375rem !important;
-            text-decoration: none !important;
-            display: block !important;
-            text-align: center !important;
-            font-weight: 500 !important;
-            transition: all 0.2s !important;
-            width: 100% !important;
-            height: 3rem !important;
-            line-height: 1.5rem !important;
-        }
-        .schedule-cleaning-btn:hover {
-            background-color: #644a00 !important;
-            transform: translateY(-1px) !important;
-        }
-        </style>""", unsafe_allow_html=True)
-        
-        with c1:
-            if st.button("🔄 Calculate Again", use_container_width=True, key="calc_again"):
-                st.session_state.show_results = False
-                st.session_state.house_data = None
-                st.rerun()
-        
-        with c2:
-            st.markdown('<a href="https://beefriendcleaners.com" class="schedule-cleaning-btn" target="_blank">🧹 Schedule Cleaning</a>', unsafe_allow_html=True)
-        
-        # Debug line to confirm this section renders
-        st.write("Debug: Bottom navigation section rendered")
 
 # Main app logic
 def main():
