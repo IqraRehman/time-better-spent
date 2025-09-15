@@ -598,19 +598,19 @@ def show_results_page(house_data):
     
     with col1:
         twitter_url = f"https://twitter.com/intent/tweet?text={quote(share_text)}&hashtags=TimeBetterSpent,LifeHack,TAKE40OFF"
-        st.markdown(f'<a href="{twitter_url}" target="_blank" class="social-btn twitter-btn">𝕏 Twitter</a>', unsafe_allow_html=True)
+        st.markdown(f'<a href="{twitter_url}" target="_blank" class="social-btn twitter-btn">🐦 Twitter</a>', unsafe_allow_html=True)
     
     with col2:
         facebook_url = f"https://www.facebook.com/sharer/sharer.php?u=https://beefriendcleaners.com&quote={quote(share_text)}"
-        st.markdown(f'<a href="{facebook_url}" target="_blank" class="social-btn facebook-btn">f Facebook</a>', unsafe_allow_html=True)
+        st.markdown(f'<a href="{facebook_url}" target="_blank" class="social-btn facebook-btn">📘 Facebook</a>', unsafe_allow_html=True)
     
     with col3:
         linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url=https://beefriendcleaners.com&summary={quote(share_text)}"
-        st.markdown(f'<a href="{linkedin_url}" target="_blank" class="social-btn linkedin-btn">in LinkedIn</a>', unsafe_allow_html=True)
+        st.markdown(f'<a href="{linkedin_url}" target="_blank" class="social-btn linkedin-btn">💼 LinkedIn</a>', unsafe_allow_html=True)
     
     with col4:
         whatsapp_url = f"https://wa.me/?text={quote(share_text)}"
-        st.markdown(f'<a href="{whatsapp_url}" target="_blank" class="social-btn whatsapp-btn">📱 WhatsApp</a>', unsafe_allow_html=True)
+        st.markdown(f'<a href="{whatsapp_url}" target="_blank" class="social-btn whatsapp-btn">💚 WhatsApp</a>', unsafe_allow_html=True)
     
     st.markdown("<p style='text-align: center; color: var(--muted-foreground); font-size: 0.875rem; margin-top: 1rem; margin-bottom: 1rem;'>Share the joy of time better spent and help friends discover their perfect alternative! 🌟</p>", unsafe_allow_html=True)
     
