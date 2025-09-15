@@ -412,8 +412,9 @@ def show_results_page(house_data):
     /* Background color matching homepage */
     .stAppViewContainer > div:first-child {
         background-color: #efe9dc !important;
-        padding: 2rem 1rem 4rem 1rem;
+        padding: 2rem 1rem 6rem 1rem;
         min-height: 100vh;
+        height: auto !important;
         max-height: none !important;
         overflow: visible !important;
     }
@@ -433,10 +434,11 @@ def show_results_page(house_data):
         border-radius: 0.75rem;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         border: 2px solid #d4c4a8;
-        padding: 2rem 2rem 4rem 2rem !important;
+        padding: 2rem 2rem 6rem 2rem !important;
         margin-top: 2rem;
-        margin-bottom: 4rem;
+        margin-bottom: 6rem;
         min-height: auto;
+        height: auto !important;
         max-height: none !important;
         overflow: visible !important;
     }
@@ -446,14 +448,27 @@ def show_results_page(house_data):
         height: auto !important;
         min-height: 100vh !important;
         max-height: none !important;
-        overflow-y: auto !important;
+        overflow: visible !important;
     }
     
     /* Ensure main container can expand */
     .main {
+        height: auto !important;
         max-height: none !important;
         overflow: visible !important;
-        padding-bottom: 4rem !important;
+        padding-bottom: 6rem !important;
+    }
+    
+    /* Force Streamlit containers to expand */
+    .element-container {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+    
+    /* Remove any height restrictions */
+    div[data-testid="stVerticalBlock"] {
+        max-height: none !important;
+        overflow: visible !important;
     }
     
     body {
