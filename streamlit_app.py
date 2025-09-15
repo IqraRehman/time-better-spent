@@ -303,9 +303,9 @@ def show_home_page():
             }}
         </style>
     </head>
-    <body class="bg-gradient-to-b from-primary/10 to-background">
-        <div class="max-w-2xl mx-auto">
-            <div class="text-center mb-8 pt-8">
+    <body class="bg-gradient-to-b from-primary/10 to-primary/10" style="min-height: 100vh;">
+        <div class="max-w-2xl mx-auto py-8 px-4">
+            <div class="text-center mb-8">
                 <h1 class="text-4xl font-bold gradient-text mb-4">
                     Time Better Spent
                 </h1>
