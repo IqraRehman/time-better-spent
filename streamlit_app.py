@@ -546,7 +546,7 @@ def show_results_page(house_data):
     
     # Social sharing section  
     st.header("🎉 Spread the Joy! Help Friends Reclaim Their Time")
-    st.markdown(f"Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for {activity['title'].lower()}! Together, let's transform cleaning hours into moments of joy.")
+    st.markdown("Found an amazing alternative to cleaning? Share your discovery and special $40 off coupon with friends who could use more time for amazing activities! Check out our full Replit app to explore all the possibilities. Together, let's transform cleaning hours into moments of joy.")
     
     # Social sharing buttons
     col1, col2, col3 = st.columns(3)
