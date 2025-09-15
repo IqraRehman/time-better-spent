@@ -409,10 +409,11 @@ def show_results_page(house_data):
         --card: hsl(0, 0%, 100%);
     }
     
-    /* Background gradient */
+    /* Background color matching homepage */
     .stAppViewContainer > div:first-child {
-        background: linear-gradient(to bottom, hsl(43, 96%, 90%) 0%, hsl(0, 0%, 100%) 100%);
+        background-color: #efe9dc !important;
         padding: 2rem 1rem;
+        min-height: 100vh;
     }
     
     /* Box size layout - constrain width and center content */
@@ -426,13 +427,24 @@ def show_results_page(house_data):
     
     /* Center content in a card-like container */
     .main .block-container {
-        background: white;
+        background: #FCF9F3;
         border-radius: 0.75rem;
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        border: 1px solid var(--border);
+        border: 2px solid #d4c4a8;
         padding: 2rem !important;
         margin-top: 2rem;
         margin-bottom: 2rem;
+        min-height: auto;
+    }
+    
+    /* Ensure full content visibility */
+    .stApp {
+        height: auto !important;
+        min-height: 100vh !important;
+    }
+    
+    body {
+        background-color: #efe9dc !important;
     }
     </style>
     """, unsafe_allow_html=True)
