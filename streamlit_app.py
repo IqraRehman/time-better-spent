@@ -573,10 +573,9 @@ def show_results_page(house_data):
         whatsapp_url = f"https://wa.me/?text={quote(share_text)}"
         st.link_button("📱 WhatsApp", whatsapp_url, use_container_width=True)
     
-    st.markdown("<p style='text-align: center; color: var(--muted-foreground); font-size: 0.875rem; margin-top: 1rem;'>Share the joy of time better spent and help friends discover their perfect alternative! 🌟</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: var(--muted-foreground); font-size: 0.875rem; margin-top: 1rem; margin-bottom: 1rem;'>Share the joy of time better spent and help friends discover their perfect alternative! 🌟</p>", unsafe_allow_html=True)
     
-    # Add spacing before bottom navigation
-    st.markdown("---")
+    # Reduced spacing before bottom navigation
     st.markdown("### Ready for the Next Step?")
     
     # Bottom navigation buttons - wrapped in container with unique keys
